@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Platform — Sales Questionnaire</title>
+  <style>
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #8b5cf6;
+      --purple-light: #a78bfa;
+      --blue: #3b82f6;
+      --bg: #0a0a0f;
+      --card: #12121a;
+      --card2: #1a1a28;
+      --border: rgba(255,255,255,0.08);
+      --border-purple: rgba(139,92,246,0.4);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --danger: #f87171;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ─── Ambient Glow ─── */
+    .ambient {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .ambient-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(139,92,246,.15) 0%, transparent 70%);
+      top: -200px; left: -200px;
+    }
+    .ambient-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(59,130,246,.12) 0%, transparent 70%);
+      top: 40%; right: -150px;
+    }
+    .ambient-3 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(139,92,246,.08) 0%, transparent 70%);
+      bottom: 10%; left: 20%;
+    }
+
+    /* ─── Progress Bar ─── */
+    #progress-bar-wrap {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.06);
+      z-index: 200;
+    }
+    #progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--purple), var(--blue));
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 12px rgba(139,92,246,0.6);
+    }
+
+    /* ─── Header ─── */
+    header {
+      position: fixed;
+      top: 3px; left: 0; right: 0;
+      height: 64px;
+      z-index: 100;
+      background: rgba(10,10,15,.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+    .brand {
+      font-weight: 700;
+      font-size: 1.05rem;
+      background: linear-gradient(90deg, var(--purple), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .step-indicator {
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .step-indicator span {
+      color: var(--purple-light);
+      font-weight: 600;
+    }
+
+    /* ─── Main Layout ─── */
+    main {
+      position: relative;
+      z-index: 1;
+      padding: 100px 20px 60px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* ─── Section Card ─── */
+    .section-card {
+      display: none;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 48px 40px;
+      animation: fadeSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    .section-card.active { display: block; }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 14px;
+      border-radius: 100px;
+      background: rgba(139,92,246,0.12);
+      border: 1px solid rgba(139,92,246,0.25);
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--purple-light);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-subtitle {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 36px;
+    }
+
+    /* ─── Form Fields ─── */
+    .field {
+      margin-bottom: 28px;
+    }
+    label.field-label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    label.field-label .req {
+      color: var(--purple-light);
+      margin-left: 3px;
+    }
+    .field-hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: -6px;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea,
+    select {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+    }
+    textarea { resize: vertical; min-height: 100px; }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+    select option { background: #1a1a28; color: var(--text); }
+
+    /* ─── Validation Error ─── */
+    .field.error input,
+    .field.error textarea,
+    .field.error select {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(248,113,113,0.12);
+    }
+    .field-error-msg {
+      display: none;
+      font-size: 0.78rem;
+      color: var(--danger);
+      margin-top: 6px;
+    }
+    .field.error .field-error-msg { display: block; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-6px); }
+      40%      { transform: translateX(6px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+    .shake { animation: shake 0.4s ease; }
+
+    /* ─── Radio / Checkbox Cards ─── */
+    .option-grid {
+      display: grid;
+      gap: 10px;
+    }
+    .option-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+    .option-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .option-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .option-grid.cols-auto { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+
+    .radio-card, .check-card {
+      position: relative;
+      cursor: pointer;
+    }
+    .radio-card input, .check-card input {
+      position: absolute;
+      opacity: 0;
+      width: 0; height: 0;
+    }
+    .radio-card-inner, .check-card-inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .radio-card input:checked ~ .radio-card-inner,
+    .check-card input:checked ~ .check-card-inner {
+      border-color: var(--purple);
+      background: rgba(139,92,246,0.12);
+      color: var(--text);
+      box-shadow: 0 0 0 1px rgba(139,92,246,0.3);
+    }
+    .radio-card:hover .radio-card-inner,
+    .check-card:hover .check-card-inner {
+      border-color: rgba(139,92,246,0.35);
+      color: var(--text);
+      background: rgba(255,255,255,0.05);
+    }
+    .radio-card-dot {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .radio-card input:checked ~ .radio-card-inner .radio-card-dot {
+      border-color: var(--purple);
+      background: var(--purple);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.25);
+    }
+    .check-card-box {
+      width: 16px; height: 16px;
+      border-radius: 4px;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .check-card input:checked ~ .check-card-inner .check-card-box {
+      border-color: var(--purple);
+      background: var(--purple);
+    }
+    .check-card input:checked ~ .check-card-inner .check-card-box::after {
+      content: '';
+      width: 8px; height: 5px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg) translate(1px, -1px);
+      display: block;
+    }
+
+    /* ─── Use Case Cards (multi-select, icon style) ─── */
+    .usecase-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .usecase-card {
+      position: relative;
+      cursor: pointer;
+    }
+    .usecase-card input {
+      position: absolute;
+      opacity: 0;
+      width: 0; height: 0;
+    }
+    .usecase-card-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 18px 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-align: center;
+      transition: all 0.2s;
+      user-select: none;
+      min-height: 90px;
+    }
+    .usecase-card input:checked ~ .usecase-card-inner {
+      border-color: var(--purple);
+      background: rgba(139,92,246,0.12);
+      box-shadow: 0 0 0 1px rgba(139,92,246,0.3);
+    }
+    .usecase-card:hover .usecase-card-inner {
+      border-color: rgba(139,92,246,0.35);
+      background: rgba(255,255,255,0.05);
+    }
+    .usecase-icon {
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+    .usecase-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.3;
+      transition: color 0.2s;
+    }
+    .usecase-card input:checked ~ .usecase-card-inner .usecase-label {
+      color: var(--text);
+    }
+
+    /* ─── Slider ─── */
+    .slider-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .slider-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--purple-light);
+      min-width: 60px;
+      text-align: right;
+    }
+    .slider-label-sm { font-size: 0.82rem; color: var(--muted); }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.1);
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--purple);
+      box-shadow: 0 0 0 4px rgba(139,92,246,0.25);
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      box-shadow: 0 0 0 6px rgba(139,92,246,0.35);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--purple);
+      box-shadow: 0 0 0 4px rgba(139,92,246,0.25);
+      border: none;
+      cursor: pointer;
+    }
+    .slider-ticks {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.73rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ─── Priority Dropdowns ─── */
+    .priority-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .priority-item label.field-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    /* ─── Divider ─── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 32px 0;
+    }
+
+    /* ─── Navigation Buttons ─── */
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 40px;
+      gap: 12px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.10);
+      color: var(--text);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), #7c3aed);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(139,92,246,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(139,92,246,0.5);
+    }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      padding: 12px 0;
+    }
+    .btn-ghost:hover { color: var(--text); }
+
+    /* ─── Conditional Fields ─── */
+    .conditional { display: none; }
+    .conditional.visible { display: block; }
+
+    /* ─── Coding Alert ─── */
+    .coding-alert {
+      display: flex;
+      gap: 14px;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+    .coding-alert-icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1.3; }
+    .coding-alert-title { font-weight: 600; font-size: 0.9rem; color: #fbbf24; margin-bottom: 4px; }
+    .coding-alert-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    /* ─── Summary Screen ─── */
+    #summary-screen {
+      display: none;
+      animation: fadeSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    #summary-screen.active { display: block; }
+
+    .summary-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .summary-title {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--purple-light), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .summary-subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .success-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+
+    .summary-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .summary-section-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .summary-section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .summary-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 8px 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.88rem;
+    }
+    .summary-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .summary-row:first-child { padding-top: 0; }
+    .summary-key {
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .summary-val {
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .note-box {
+      background: rgba(139,92,246,0.08);
+      border: 1px solid rgba(139,92,246,0.2);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 32px 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .note-box strong { color: var(--purple-light); }
+
+    /* ─── PDF / Print Button ─── */
+    .pdf-btn-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 32px;
+      padding-bottom: 16px;
+    }
+    .btn-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 24px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--blue), #2563eb);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 6px 24px rgba(59,130,246,0.4);
+      transition: all 0.2s;
+    }
+    .btn-pdf:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(59,130,246,0.55);
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 640px) {
+      header { padding: 0 20px; }
+      .section-card { padding: 28px 20px 24px; }
+      .section-title { font-size: 1.35rem; }
+      .option-grid.cols-4 { grid-template-columns: 1fr 1fr; }
+      .option-grid.cols-2 { grid-template-columns: 1fr; }
+      .usecase-grid { grid-template-columns: 1fr 1fr; }
+      .priority-grid { grid-template-columns: 1fr; }
+      .summary-row { grid-template-columns: 1fr; }
+      .summary-key { color: var(--purple-light); font-size: 0.78rem; margin-bottom: 2px; }
+    }
+
+    /* ─── Spinner ─── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── Print / PDF CSS ─── */
+    @media print {
+      body { background: #fff !important; color: #1a1a1a !important; }
+      .ambient, header, #progress-bar-wrap, .nav-buttons, .pdf-btn-wrap { display: none !important; }
+      main { padding: 20px !important; max-width: 100% !important; }
+      .section-card { display: none !important; }
+      #summary-screen { display: block !important; }
+      .summary-header { margin-bottom: 24px; }
+      .summary-title { color: #4f46e5 !important; -webkit-text-fill-color: #4f46e5 !important; }
+      .summary-subtitle { color: #6b7280 !important; }
+      .summary-section {
+        background: #f9fafb !important;
+        border: 1px solid #e5e7eb !important;
+        break-inside: avoid;
+        margin-bottom: 16px;
+      }
+      .summary-section-title { color: #4f46e5 !important; }
+      .summary-key { color: #6b7280 !important; }
+      .summary-val { color: #1a1a1a !important; }
+      .note-box {
+        background: #f0f0ff !important;
+        border-color: #c4b5fd !important;
+      }
+      .note-box strong { color: #4f46e5 !important; }
+      .section-badge { border-color: #c4b5fd !important; color: #4f46e5 !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient glow -->
+  <div class="ambient ambient-1"></div>
+  <div class="ambient ambient-2"></div>
+  <div class="ambient ambient-3"></div>
+
+  <!-- Progress bar -->
+  <div id="progress-bar-wrap">
+    <div id="progress-bar" style="width: 25%"></div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">AI Platform</div>
+    <div class="step-indicator" id="step-indicator">Step <span id="step-num">1</span> of 4</div>
+  </header>
+
+  <main>
+    <!-- ═══════════════════════════════════════════
+         SECTION 1: Company & Team
+    ═══════════════════════════════════════════ -->
+    <div class="section-card active" id="section-1">
+      <div class="section-badge">01 / 04 &nbsp;·&nbsp; Company & Team</div>
+      <h1 class="section-title">Tell us about your team</h1>
+      <p class="section-subtitle">Help us understand who you are and the context you're working in.</p>
+
+      <!-- Company Name -->
+      <div class="field" id="f-company">
+        <label class="field-label" for="company">Company name <span class="req">*</span></label>
+        <input type="text" id="company" placeholder="e.g. Acme Corporation" />
+        <div class="field-error-msg">Please enter your company name.</div>
+      </div>
+
+      <!-- Name & Role -->
+      <div class="field" id="f-contact-name">
+        <label class="field-label" for="contact-name">Your name & role <span class="req">*</span></label>
+        <input type="text" id="contact-name" placeholder="e.g. Jane Smith, Head of Engineering" />
+        <div class="field-error-msg">Please enter your name and role.</div>
+      </div>
+
+      <!-- Team Size -->
+      <div class="field" id="f-team-size">
+        <label class="field-label">Team size that will use AI <span class="req">*</span></label>
+        <div class="option-grid cols-4">
+          <label class="radio-card">
+            <input type="radio" name="team-size" value="1–5" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>1–5</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="team-size" value="6–20" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>6–20</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="team-size" value="21–50" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>21–50</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="team-size" value="50+" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>50+</div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select a team size.</div>
+      </div>
+
+      <!-- Industry -->
+      <div class="field" id="f-industry">
+        <label class="field-label" for="industry">Industry / Department <span class="req">*</span></label>
+        <select id="industry">
+          <option value="" disabled selected>Select your industry or department…</option>
+          <option value="Software Development">Software Development</option>
+          <option value="Sales & Marketing">Sales & Marketing</option>
+          <option value="Legal">Legal</option>
+          <option value="Finance">Finance</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Insurance">Insurance</option>
+          <option value="HR">HR</option>
+          <option value="Operations">Operations</option>
+          <option value="Other">Other</option>
+        </select>
+        <div class="field-error-msg">Please select an industry.</div>
+      </div>
+
+      <div class="nav-buttons">
+        <div></div>
+        <button class="btn btn-primary" onclick="goTo(2)">Next &nbsp;→</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SECTION 2: Primary Use Case
+    ═══════════════════════════════════════════ -->
+    <div class="section-card" id="section-2">
+      <div class="section-badge">02 / 04 &nbsp;·&nbsp; Primary Use Case</div>
+      <h1 class="section-title">What will you primarily use AI for?</h1>
+      <p class="section-subtitle">Select all that apply — pick as many as relevant to your team.</p>
+
+      <div class="field" id="f-use-cases">
+        <div class="usecase-grid">
+          <label class="usecase-card">
+            <input type="checkbox" name="use-case" value="Write & review code" />
+            <div class="usecase-card-inner">
+              <div class="usecase-icon">💻</div>
+              <div class="usecase-label">Write & review code</div>
+            </div>
+          </label>
+          <label class="usecase-card">
+            <input type="checkbox" name="use-case" value="Document Q&A" />
+            <div class="usecase-card-inner">
+              <div class="usecase-icon">📄</div>
+              <div class="usecase-label">Document Q&A</div>
+            </div>
+          </label>
+          <label class="usecase-card">
+            <input type="checkbox" name="use-case" value="Email & calendar" />
+            <div class="usecase-card-inner">
+              <div class="usecase-icon">📧</div>
+              <div class="usecase-label">Email & calendar management</div>
+            </div>
+          </label>
+          <label class="usecase-card">
+            <input type="checkbox" name="use-case" value="Web research & summarization" />
+            <div class="usecase-card-inner">
+              <div class="usecase-icon">🌐</div>
+              <div class="usecase-label">Web research & summarization</div>
+            </div>
+          </label>
+          <label class="usecase-card">
+            <input type="checkbox" name="use-case" value="Voice interaction" />
+            <div class="usecase-card-inner">
+              <div class="usecase-icon">🎙️</div>
+              <div class="usecase-label">Voice interaction</div>
+            </div>
+          </label>
+          <label class="usecase-card">
+            <input type="checkbox" name="use-case" value="Lead generation & sales outreach" />
+            <div class="usecase-card-inner">
+              <div class="usecase-icon">🚀</div>
+              <div class="usecase-label">Lead generation & sales outreach</div>
+            </div>
+          </label>
+          <label class="usecase-card">
+            <input type="checkbox" name="use-case" value="Team knowledge management" />
+            <div class="usecase-card-inner">
+              <div class="usecase-icon">🏢</div>
+              <div class="usecase-label">Team knowledge management</div>
+            </div>
+          </label>
+          <label class="usecase-card">
+            <input type="checkbox" name="use-case" value="Content writing & editing" />
+            <div class="usecase-card-inner">
+              <div class="usecase-icon">✍️</div>
+              <div class="usecase-label">Content writing & editing</div>
+            </div>
+          </label>
+          <label class="usecase-card">
+            <input type="checkbox" name="use-case" value="Data analysis & reporting" />
+            <div class="usecase-card-inner">
+              <div class="usecase-icon">📊</div>
+              <div class="usecase-label">Data analysis & reporting</div>
+            </div>
+          </label>
+          <label class="usecase-card" id="uc-other-card">
+            <input type="checkbox" name="use-case" value="Other" id="uc-other-chk" onchange="toggleOtherUsecase()" />
+            <div class="usecase-card-inner">
+              <div class="usecase-icon">🔧</div>
+              <div class="usecase-label">Other</div>
+            </div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select at least one use case.</div>
+      </div>
+
+      <!-- Other use case text -->
+      <div class="conditional field" id="other-usecase-field">
+        <label class="field-label" for="other-usecase-text">Describe your other use case</label>
+        <input type="text" id="other-usecase-text" placeholder="Tell us what you have in mind…" />
+      </div>
+
+      <!-- AI Coding follow-up (shown when "Write & review code" is selected) -->
+      <div class="conditional field" id="coding-followup-field">
+        <div class="coding-alert">
+          <div class="coding-alert-icon">⚡</div>
+          <div>
+            <div class="coding-alert-title">AI Coding requires significant GPU resources</div>
+            <div class="coding-alert-desc">Running capable code generation models (e.g. Qwen2.5-Coder 32B, DeepSeek-Coder V2) on-premise demands high VRAM — typically 24 GB+ per GPU. We'll need to understand your codebase and usage scale to recommend the right hardware.</div>
+          </div>
+        </div>
+        <label class="field-label" style="margin-top:16px;">Tell us more about your coding use case</label>
+        <div class="option-grid" style="grid-template-columns:1fr 1fr; margin-bottom:12px;">
+          <label class="check-card">
+            <input type="checkbox" name="coding-task" value="Code generation (write new code)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>Code generation</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="coding-task" value="Code review & bug detection" />
+            <div class="check-card-inner"><div class="check-card-box"></div>Code review & bug detection</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="coding-task" value="Code explanation & documentation" />
+            <div class="check-card-inner"><div class="check-card-box"></div>Explanation & documentation</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="coding-task" value="Refactoring & optimization" />
+            <div class="check-card-inner"><div class="check-card-box"></div>Refactoring & optimization</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="coding-task" value="Unit test generation" />
+            <div class="check-card-inner"><div class="check-card-box"></div>Unit test generation</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="coding-task" value="IDE integration (Copilot-style)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>IDE integration (Copilot-style)</div>
+          </label>
+        </div>
+        <label class="field-label">Primary programming languages</label>
+        <input type="text" id="coding-languages" placeholder="e.g. Python, TypeScript, Java, Go…" />
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goTo(1)">← Back</button>
+        <button class="btn btn-primary" onclick="goTo(3)">Next &nbsp;→</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SECTION 3: Current Situation
+    ═══════════════════════════════════════════ -->
+    <div class="section-card" id="section-3">
+      <div class="section-badge">03 / 04 &nbsp;·&nbsp; Current Situation</div>
+      <h1 class="section-title">Your current workflow</h1>
+      <p class="section-subtitle">Understanding your existing setup helps us tailor the right solution.</p>
+
+      <!-- Current AI usage -->
+      <div class="field" id="f-ai-usage">
+        <label class="field-label">Do you currently use any AI tools? <span class="req">*</span></label>
+        <div class="option-grid cols-3">
+          <label class="radio-card">
+            <input type="radio" name="ai-usage" value="Yes" onchange="toggleCurrentTools()" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>Yes</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="ai-usage" value="Sometimes" onchange="toggleCurrentTools()" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>Sometimes</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="ai-usage" value="No" onchange="toggleCurrentTools()" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>No</div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select an option.</div>
+      </div>
+
+      <!-- Which tools (conditional) -->
+      <div class="conditional field" id="current-tools-field">
+        <label class="field-label" for="current-tools">Which tools do you currently use?</label>
+        <input type="text" id="current-tools" placeholder="e.g. ChatGPT, Copilot, Notion AI…" />
+      </div>
+
+      <!-- Pain points -->
+      <div class="field" id="f-pain-point">
+        <label class="field-label" for="pain-point">What is your biggest pain point today? <span class="req">*</span></label>
+        <textarea id="pain-point" placeholder="Describe the challenges or inefficiencies your team faces…"></textarea>
+        <div class="field-error-msg">Please describe your biggest pain point.</div>
+      </div>
+
+      <!-- Data privacy -->
+      <div class="field" id="f-privacy">
+        <label class="field-label">Where will the AI be deployed? <span class="req">*</span></label>
+        <div class="option-grid" style="grid-template-columns: 1fr;">
+          <label class="radio-card">
+            <input type="radio" name="privacy" value="On-premise (fully air-gapped)" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🖥️ On-Premise (Air-Gapped)</div>
+                <div style="font-size:0.78rem;color:var(--muted);">Fully self-hosted on internal servers — no internet connection required, data never leaves your network</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="privacy" value="On-premise (internet access allowed)" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🔒 On-Premise (with Internet Access)</div>
+                <div style="font-size:0.78rem;color:var(--muted);">Self-hosted on internal servers, but internet access is available for web search and API calls</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="privacy" value="Private cloud" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">☁️ Private Cloud</div>
+                <div style="font-size:0.78rem;color:var(--muted);">Dedicated cloud instance — isolated environment, managed by us</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="privacy" value="Flexible (SaaS cloud is fine)" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🌐 Flexible (SaaS)</div>
+                <div style="font-size:0.78rem;color:var(--muted);">Standard cloud hosting is acceptable</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="privacy" value="Not sure" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🤔 Not Sure / Need Guidance</div>
+                <div style="font-size:0.78rem;color:var(--muted);">I'm not sure what fits best — we'll help you decide</div>
+              </div>
+            </div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select a deployment preference.</div>
+      </div>
+
+      <!-- Integrations -->
+      <div class="field" id="f-integrations">
+        <label class="field-label">Do you need to integrate with existing systems?</label>
+        <div class="option-grid" style="grid-template-columns: 1fr 1fr;">
+          <label class="check-card">
+            <input type="checkbox" name="integration" value="Microsoft Exchange / Outlook" />
+            <div class="check-card-inner"><div class="check-card-box"></div>Microsoft Exchange / Outlook</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="integration" value="CRM (Salesforce, HubSpot, etc.)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>CRM (Salesforce, HubSpot…)</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="integration" value="LinkedIn" />
+            <div class="check-card-inner"><div class="check-card-box"></div>LinkedIn</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="integration" value="Custom internal tools" />
+            <div class="check-card-inner"><div class="check-card-box"></div>Custom internal tools</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="integration" value="None" id="integ-none" onchange="toggleNoneInteg(this)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>None</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="integration" value="Not sure" id="integ-notsure" onchange="toggleNoneInteg(this)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>I'm not sure</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goTo(2)">← Back</button>
+        <button class="btn btn-primary" onclick="goTo(4)">Next &nbsp;→</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SECTION 4: Requirements & Timeline
+    ═══════════════════════════════════════════ -->
+    <div class="section-card" id="section-4">
+      <div class="section-badge">04 / 04 &nbsp;·&nbsp; Requirements & Timeline</div>
+      <h1 class="section-title">Scale & timeline</h1>
+      <p class="section-subtitle">A few final details to help us scope the right plan for you.</p>
+
+      <!-- Number of users (slider) -->
+      <div class="field">
+        <label class="field-label">Number of users</label>
+        <div class="slider-wrap">
+          <div class="slider-header">
+            <span class="slider-label-sm">Drag to set</span>
+            <div class="slider-value"><span id="slider-val">25</span> users</div>
+          </div>
+          <input type="range" id="user-slider" min="1" max="200" value="25"
+            oninput="document.getElementById('slider-val').textContent = this.value" />
+          <div class="slider-ticks">
+            <span>1</span>
+            <span>50</span>
+            <span>100</span>
+            <span>150</span>
+            <span>200</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="field" id="f-timeline">
+        <label class="field-label">How soon are you looking to get started? <span class="req">*</span></label>
+        <div class="option-grid cols-2">
+          <label class="radio-card">
+            <input type="radio" name="timeline" value="ASAP" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>ASAP</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="timeline" value="Within 1 month" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>Within 1 month</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="timeline" value="1–3 months" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>1–3 months</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="timeline" value="Just exploring" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>Just exploring</div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select a timeline.</div>
+      </div>
+
+      <!-- Priority dropdowns -->
+      <div class="field" id="f-priority">
+        <label class="field-label">What's most important to you? <span class="req">*</span></label>
+        <p class="field-hint">Rank your top 3 priorities — each value can only be selected once.</p>
+        <div class="priority-grid">
+          <div class="priority-item">
+            <label class="field-label" for="priority-1">1st Priority</label>
+            <select id="priority-1" onchange="syncPriorities()">
+              <option value="" disabled selected>Select…</option>
+              <option value="Ease of use">Ease of use</option>
+              <option value="Data security">Data security</option>
+              <option value="Integration with existing tools">Integration with existing tools</option>
+              <option value="Cost">Cost</option>
+              <option value="Feature depth">Feature depth</option>
+            </select>
+          </div>
+          <div class="priority-item">
+            <label class="field-label" for="priority-2">2nd Priority</label>
+            <select id="priority-2" onchange="syncPriorities()">
+              <option value="" disabled selected>Select…</option>
+              <option value="Ease of use">Ease of use</option>
+              <option value="Data security">Data security</option>
+              <option value="Integration with existing tools">Integration with existing tools</option>
+              <option value="Cost">Cost</option>
+              <option value="Feature depth">Feature depth</option>
+            </select>
+          </div>
+          <div class="priority-item">
+            <label class="field-label" for="priority-3">3rd Priority</label>
+            <select id="priority-3" onchange="syncPriorities()">
+              <option value="" disabled selected>Select…</option>
+              <option value="Ease of use">Ease of use</option>
+              <option value="Data security">Data security</option>
+              <option value="Integration with existing tools">Integration with existing tools</option>
+              <option value="Cost">Cost</option>
+              <option value="Feature depth">Feature depth</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-error-msg" id="priority-error" style="display:none; margin-top:8px;">Please select your top 3 priorities without duplicates.</div>
+      </div>
+
+      <!-- Other requirements -->
+      <div class="field">
+        <label class="field-label" for="other-req">Any other requirements or questions?</label>
+        <textarea id="other-req" placeholder="Anything else you'd like us to know or any questions for our team…"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Preferred contact method -->
+      <div class="field" id="f-contact-method">
+        <label class="field-label">Preferred contact method <span class="req">*</span></label>
+        <div class="option-grid cols-3">
+          <label class="radio-card">
+            <input type="radio" name="contact-method" value="Email" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>📧 Email</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="contact-method" value="Phone" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>📞 Phone</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="contact-method" value="Video call" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>🎥 Video call</div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select a preferred contact method.</div>
+      </div>
+
+      <!-- Contact details -->
+      <div class="field" id="f-email">
+        <label class="field-label" for="contact-email">Email address <span class="req">*</span></label>
+        <input type="email" id="contact-email" placeholder="you@company.com" />
+        <div class="field-error-msg">Please enter a valid email address.</div>
+      </div>
+      <div class="field">
+        <label class="field-label" for="contact-phone">Phone number <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">(optional)</span></label>
+        <input type="tel" id="contact-phone" placeholder="+1 555 000 0000" />
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goTo(3)">← Back</button>
+        <button class="btn btn-primary" onclick="submitForm()">Submit &nbsp;✓</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SUMMARY SCREEN
+    ═══════════════════════════════════════════ -->
+    <div id="summary-screen">
+      <div class="summary-header">
+        <div class="success-icon">🎉</div>
+        <h1 class="summary-title">Thank you!</h1>
+        <p class="summary-subtitle">Here's a summary of your requirements. Our team will review this and be in touch shortly.</p>
+      </div>
+
+      <div class="summary-section">
+        <div class="summary-section-title">01 &nbsp; Company & Team</div>
+        <div id="sum-section-1"></div>
+      </div>
+
+      <div class="summary-section">
+        <div class="summary-section-title">02 &nbsp; Primary Use Case</div>
+        <div id="sum-section-2"></div>
+      </div>
+
+      <div class="summary-section">
+        <div class="summary-section-title">03 &nbsp; Current Situation</div>
+        <div id="sum-section-3"></div>
+      </div>
+
+      <div class="summary-section">
+        <div class="summary-section-title">04 &nbsp; Requirements & Timeline</div>
+        <div id="sum-section-4"></div>
+      </div>
+
+      <div class="note-box">
+        <strong>What happens next?</strong><br />
+        Our team will review your requirements and get back to you within <strong>1 business day</strong> with a tailored proposal. If you have any urgent questions, feel free to reach out directly.
+      </div>
+
+      <!-- PDF download button -->
+      <div class="pdf-btn-wrap">
+        <button class="btn-pdf" onclick="window.print()">⬇ Download Summary (PDF)</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ─── State ───────────────────────────────────────────
+    let currentSection = 1;
+    const totalSections = 4;
+
+    // ─── Navigation ──────────────────────────────────────
+    function goTo(n) {
+      if (n > currentSection) {
+        if (!validateSection(currentSection)) return;
+      }
+      document.getElementById('section-' + currentSection).classList.remove('active');
+      currentSection = n;
+      const next = document.getElementById('section-' + n);
+      next.classList.add('active');
+      // Re-trigger animation
+      next.style.animation = 'none';
+      next.offsetHeight; // reflow
+      next.style.animation = '';
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateProgress() {
+      const pct = (currentSection / totalSections) * 100;
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('step-num').textContent = currentSection;
+    }
+
+    // ─── Validation ──────────────────────────────────────
+    function clearErrors(fieldId) {
+      const f = document.getElementById(fieldId);
+      if (f) { f.classList.remove('error', 'shake'); }
+    }
+    function showError(fieldId) {
+      const f = document.getElementById(fieldId);
+      if (!f) return;
+      f.classList.remove('shake');
+      f.offsetHeight;
+      f.classList.add('error', 'shake');
+    }
+
+    function validateSection(n) {
+      let valid = true;
+
+      if (n === 1) {
+        if (!document.getElementById('company').value.trim()) { showError('f-company'); valid = false; } else clearErrors('f-company');
+        if (!document.getElementById('contact-name').value.trim()) { showError('f-contact-name'); valid = false; } else clearErrors('f-contact-name');
+        const ts = document.querySelector('input[name="team-size"]:checked');
+        if (!ts) { showError('f-team-size'); valid = false; } else clearErrors('f-team-size');
+        const ind = document.getElementById('industry').value;
+        if (!ind) { showError('f-industry'); valid = false; } else clearErrors('f-industry');
+      }
+
+      if (n === 2) {
+        const uc = document.querySelectorAll('input[name="use-case"]:checked');
+        if (uc.length === 0) { showError('f-use-cases'); valid = false; } else clearErrors('f-use-cases');
+      }
+
+      if (n === 3) {
+        const au = document.querySelector('input[name="ai-usage"]:checked');
+        if (!au) { showError('f-ai-usage'); valid = false; } else clearErrors('f-ai-usage');
+        const pp = document.getElementById('pain-point').value.trim();
+        if (!pp) { showError('f-pain-point'); valid = false; } else clearErrors('f-pain-point');
+        const priv = document.querySelector('input[name="privacy"]:checked');
+        if (!priv) { showError('f-privacy'); valid = false; } else clearErrors('f-privacy');
+      }
+
+      if (n === 4) {
+        const tl = document.querySelector('input[name="timeline"]:checked');
+        if (!tl) { showError('f-timeline'); valid = false; } else clearErrors('f-timeline');
+        // Priority validation
+        const p1 = document.getElementById('priority-1').value;
+        const p2 = document.getElementById('priority-2').value;
+        const p3 = document.getElementById('priority-3').value;
+        const pErr = document.getElementById('priority-error');
+        const pField = document.getElementById('f-priority');
+        if (!p1 || !p2 || !p3 || p1 === p2 || p2 === p3 || p1 === p3) {
+          pErr.style.display = 'block';
+          pField.classList.remove('shake'); pField.offsetHeight; pField.classList.add('shake');
+          valid = false;
+        } else {
+          pErr.style.display = 'none';
+          pField.classList.remove('error');
+        }
+
+        const cm = document.querySelector('input[name="contact-method"]:checked');
+        if (!cm) { showError('f-contact-method'); valid = false; } else clearErrors('f-contact-method');
+
+        const em = document.getElementById('contact-email').value.trim();
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em);
+        if (!emailOk) { showError('f-email'); valid = false; } else clearErrors('f-email');
+      }
+
+      return valid;
+    }
+
+    // ─── Conditional Fields ──────────────────────────────
+    function toggleCurrentTools() {
+      const val = document.querySelector('input[name="ai-usage"]:checked');
+      const field = document.getElementById('current-tools-field');
+      if (val && (val.value === 'Yes' || val.value === 'Sometimes')) {
+        field.classList.add('visible');
+      } else {
+        field.classList.remove('visible');
+      }
+    }
+
+    function toggleOtherUsecase() {
+      const chk = document.getElementById('uc-other-chk');
+      const field = document.getElementById('other-usecase-field');
+      if (chk.checked) {
+        field.classList.add('visible');
+      } else {
+        field.classList.remove('visible');
+        document.getElementById('other-usecase-text').value = '';
+      }
+    }
+
+    function toggleCodingFields() {
+      const isCoding = !!document.querySelector('input[name="use-case"][value="Write & review code"]:checked');
+      document.getElementById('coding-followup-field').classList.toggle('visible', isCoding);
+      // gpu-coding-warning removed
+    }
+
+    // Attach to all use-case checkboxes
+    document.querySelectorAll('input[name="use-case"]').forEach(cb => {
+      cb.addEventListener('change', toggleCodingFields);
+    });
+
+    function toggleNoneInteg(el) {
+      if (el.checked) {
+        document.querySelectorAll('input[name="integration"]').forEach(cb => {
+          if (cb !== el) cb.checked = false;
+        });
+      }
+    }
+    // Uncheck "None" and "Not sure" if another integration is selected
+    document.querySelectorAll('input[name="integration"]').forEach(cb => {
+      if (cb.id !== 'integ-none' && cb.id !== 'integ-notsure') {
+        cb.addEventListener('change', function() {
+          if (this.checked) {
+            document.getElementById('integ-none').checked = false;
+            document.getElementById('integ-notsure').checked = false;
+          }
+        });
+      }
+    });
+
+    // ─── Priority Dropdowns (prevent duplicates) ─────────
+    function syncPriorities() {
+      const ids = ['priority-1', 'priority-2', 'priority-3'];
+      const vals = ids.map(id => document.getElementById(id).value);
+
+      ids.forEach((id, i) => {
+        const sel = document.getElementById(id);
+        const currentVal = vals[i];
+        Array.from(sel.options).forEach(opt => {
+          if (opt.value === '') return; // keep placeholder
+          const usedElsewhere = vals.some((v, j) => j !== i && v === opt.value);
+          opt.disabled = usedElsewhere;
+        });
+      });
+    }
+
+    // ─── Submit & Build Summary ──────────────────────────
+    async function submitForm() {
+      if (!validateSection(4)) return;
+
+      const submitBtn = document.querySelector('#section-4 .btn-primary');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px;"></span>Submitting…';
+
+      const ucChecked = Array.from(document.querySelectorAll('input[name="use-case"]:checked')).map(c => c.value);
+      const otherUC = document.getElementById('other-usecase-text').value.trim();
+      if (otherUC && ucChecked.includes('Other')) {
+        ucChecked[ucChecked.indexOf('Other')] = 'Other: ' + otherUC;
+      }
+
+      const payload = {
+        company:            document.getElementById('company').value.trim(),
+        contact_name:       document.getElementById('contact-name').value.trim(),
+        team_size:          (document.querySelector('input[name="team-size"]:checked') || {}).value || '',
+        industry:           document.getElementById('industry').value,
+        use_cases:          ucChecked,
+        coding_tasks:       Array.from(document.querySelectorAll('input[name="coding-task"]:checked')).map(c => c.value),
+        coding_languages:   document.getElementById('coding-languages').value.trim(),
+        ai_usage:           (document.querySelector('input[name="ai-usage"]:checked') || {}).value || '',
+        current_tools:      document.getElementById('current-tools').value.trim(),
+        pain_point:         document.getElementById('pain-point').value.trim(),
+        privacy:            (document.querySelector('input[name="privacy"]:checked') || {}).value || '',
+        integrations:       Array.from(document.querySelectorAll('input[name="integration"]:checked')).map(c => c.value),
+        num_users:          parseInt(document.getElementById('user-slider').value),
+        timeline:           (document.querySelector('input[name="timeline"]:checked') || {}).value || '',
+        priority_1:         document.getElementById('priority-1').value,
+        priority_2:         document.getElementById('priority-2').value,
+        priority_3:         document.getElementById('priority-3').value,
+        other_requirements: document.getElementById('other-req').value.trim(),
+        contact_method:     (document.querySelector('input[name="contact-method"]:checked') || {}).value || '',
+        contact_email:      document.getElementById('contact-email').value.trim(),
+        contact_phone:      document.getElementById('contact-phone').value.trim(),
+      };
+
+      try {
+        const res = await fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || `Server error ${res.status}`);
+        }
+      } catch (e) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Submit &nbsp;✓';
+        alert('Submission failed: ' + e.message);
+        return;
+      }
+
+      buildSummary();
+      document.getElementById('section-4').classList.remove('active');
+      document.getElementById('summary-screen').classList.add('active');
+      document.getElementById('progress-bar').style.width = '100%';
+      document.getElementById('step-indicator').innerHTML = '<span style="color:var(--purple-light)">Complete ✓</span>';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function row(key, val) {
+      if (!val || val === '—') val = '<span style="color:var(--muted);font-style:italic;">Not provided</span>';
+      return `<div class="summary-row"><div class="summary-key">${key}</div><div class="summary-val">${val}</div></div>`;
+    }
+
+    function buildSummary() {
+      // Section 1
+      const company = document.getElementById('company').value.trim() || '—';
+      const contactName = document.getElementById('contact-name').value.trim() || '—';
+      const teamSize = (document.querySelector('input[name="team-size"]:checked') || {}).value || '—';
+      const industry = document.getElementById('industry').value || '—';
+      document.getElementById('sum-section-1').innerHTML =
+        row('Company', company) +
+        row('Name & Role', contactName) +
+        row('Team Size', teamSize) +
+        row('Industry / Department', industry);
+
+      // Section 2
+      const ucChecked = Array.from(document.querySelectorAll('input[name="use-case"]:checked')).map(c => c.value);
+      const otherUC = document.getElementById('other-usecase-text').value.trim();
+      if (otherUC && ucChecked.includes('Other')) {
+        const idx = ucChecked.indexOf('Other');
+        ucChecked[idx] = 'Other: ' + otherUC;
+      }
+      const ucList = ucChecked.length ? ucChecked.map(u => `<span style="display:inline-block;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);border-radius:6px;padding:2px 10px;font-size:0.82rem;margin:2px;">${u}</span>`).join(' ') : '—';
+      const isCodingSelected = ucChecked.some(u => u.includes('Write & review code'));
+      const codingTasks = isCodingSelected
+        ? Array.from(document.querySelectorAll('input[name="coding-task"]:checked')).map(c => c.value)
+        : [];
+      const codingLangs = document.getElementById('coding-languages').value.trim();
+      let sec2html = row('Selected use cases', ucList);
+      if (isCodingSelected) {
+        sec2html += row('Coding tasks', codingTasks.length ? codingTasks.join(', ') : '—');
+        sec2html += row('Programming languages', codingLangs || '—');
+      }
+      document.getElementById('sum-section-2').innerHTML = sec2html;
+
+      // Section 3
+      const aiUsage = (document.querySelector('input[name="ai-usage"]:checked') || {}).value || '—';
+      const currentTools = document.getElementById('current-tools').value.trim() || '—';
+      const painPoint = document.getElementById('pain-point').value.trim() || '—';
+      const privacy = (document.querySelector('input[name="privacy"]:checked') || {}).value || '—';
+      const integChecked = Array.from(document.querySelectorAll('input[name="integration"]:checked')).map(c => c.value);
+      const integList = integChecked.length ? integChecked.join(', ') : 'None selected';
+
+      let sec3 = row('Currently using AI?', aiUsage);
+      if (aiUsage === 'Yes' || aiUsage === 'Sometimes') {
+        sec3 += row('Current tools', currentTools);
+      }
+      sec3 += row('Biggest pain point', painPoint.replace(/\n/g, '<br>'));
+      sec3 += row('Data privacy importance', privacy);
+      sec3 += row('Integration needs', integList);
+      document.getElementById('sum-section-3').innerHTML = sec3;
+
+      // Section 4
+      const numUsers = document.getElementById('user-slider').value;
+      const timeline = (document.querySelector('input[name="timeline"]:checked') || {}).value || '—';
+      const p1 = document.getElementById('priority-1').value;
+      const p2 = document.getElementById('priority-2').value;
+      const p3 = document.getElementById('priority-3').value;
+      const otherReq = document.getElementById('other-req').value.trim() || '—';
+      const contactMethod = (document.querySelector('input[name="contact-method"]:checked') || {}).value || '—';
+      const contactEmail = document.getElementById('contact-email').value.trim() || '—';
+      const contactPhone = document.getElementById('contact-phone').value.trim() || '—';
+
+      document.getElementById('sum-section-4').innerHTML =
+        row('Number of users', numUsers) +
+        row('Start timeline', timeline) +
+        row('Top priorities', `1st: ${p1}<br>2nd: ${p2}<br>3rd: ${p3}`) +
+        row('Other requirements', otherReq.replace(/\n/g, '<br>')) +
+        row('Preferred contact', contactMethod) +
+        row('Email', contactEmail) +
+        row('Phone', contactPhone !== '—' ? contactPhone : '—');
+    }
+
+    // ─── Update slider track fill ─────────────────────────
+    const slider = document.getElementById('user-slider');
+    function updateSliderFill() {
+      const min = +slider.min, max = +slider.max, val = +slider.value;
+      const pct = ((val - min) / (max - min)) * 100;
+      slider.style.background = `linear-gradient(to right, var(--purple) ${pct}%, rgba(255,255,255,0.1) ${pct}%)`;
+    }
+    slider.addEventListener('input', updateSliderFill);
+    updateSliderFill();
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+services:
+  backend:
+    build: ./backend
+    container_name: questionnaire-backend
+    restart: unless-stopped
+    environment:
+      - DATA_DIR=/data/submissions
+    volumes:
+      - ./submissions:/data/submissions
+    ports:
+      - "8000:8000"
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
