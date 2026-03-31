@@ -7,8 +7,17 @@ services:
       - DATA_DIR=/data/submissions
     volumes:
       - ./submissions:/data/submissions
+    networks:
+      - app-net
+
+  frontend:
+    build: ./frontend
+    container_name: questionnaire-frontend
+    restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "3000:80"
+    depends_on:
+      - backend
     networks:
       - app-net
 
