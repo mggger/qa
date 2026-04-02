@@ -60,6 +60,22 @@ class SubmissionPayload(BaseModel):
     contact_method: str
     contact_email: EmailStr
     contact_phone: Optional[str] = ""
+    access_channels: Optional[List[str]] = []
+    knowledge_base: Optional[str] = ""
+    doc_volume: Optional[str] = ""
+    automation_level: Optional[str] = ""
+    ai_persona: Optional[str] = ""
+    lang_support: Optional[str] = ""
+    scope_notes: Optional[str] = ""
+    daily_users: Optional[str] = ""
+    usage_frequency: Optional[str] = ""
+    response_speed: Optional[str] = ""
+    future_scale: Optional[str] = ""
+    budget_range: Optional[str] = ""
+    daily_apps: Optional[List[str]] = []
+    integration_actions: Optional[List[str]] = []
+    scenario_example: Optional[str] = ""
+    user_type: Optional[str] = ""
 
 
 def build_pdf(payload: SubmissionPayload, filepath: str, submitted_at: str):
@@ -185,6 +201,27 @@ def build_pdf(payload: SubmissionPayload, filepath: str, submitted_at: str):
         ("Preferred Contact", payload.contact_method),
         ("Email",             str(payload.contact_email)),
         ("Phone",             payload.contact_phone or "—"),
+    ])
+
+    # ── Section 5 ─────────────────────────────────────────────────────────────
+    daily_apps_str = ", ".join(payload.daily_apps) if payload.daily_apps else "—"
+    integ_actions_str = ", ".join(payload.integration_actions) if payload.integration_actions else "—"
+    sec5_rows = [
+        ("Daily Apps / Systems", daily_apps_str),
+        ("Integration Actions",  integ_actions_str),
+        ("Scenario Example",     payload.scenario_example or "—"),
+        ("Target Users",         payload.user_type or "—"),
+        ("Language Support",     payload.lang_support or "—"),
+    ]
+    section_block("05 · Integration & Features", sec5_rows)
+
+    # ── Section 6 ─────────────────────────────────────────────────────────────
+    section_block("06 · Scale & Budget (Cost Drivers)", [
+        ("Daily Active Users", payload.daily_users or "—"),
+        ("Usage Intensity",    payload.usage_frequency or "—"),
+        ("Response Speed",     payload.response_speed or "—"),
+        ("Expected Growth",    payload.future_scale or "—"),
+        ("Budget Range",       payload.budget_range or "—"),
     ])
 
     # ── Footer ────────────────────────────────────────────────────────────────

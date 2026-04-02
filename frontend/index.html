@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Platform — Sales Questionnaire</title>
+  <!-- v2: added Section 5 for scale/performance cost estimation -->
   <style>
     /* ─── Reset & Base ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,7 +28,7 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
       font-size: 1rem;
       line-height: 1.7;
       overflow-x: hidden;
@@ -691,7 +692,7 @@
   <!-- Header -->
   <header>
     <div class="brand">AI Platform</div>
-    <div class="step-indicator" id="step-indicator">Step <span id="step-num">1</span> of 4</div>
+    <div class="step-indicator" id="step-indicator">Step <span id="step-num">1</span> of 6</div>
   </header>
 
   <main>
@@ -699,7 +700,7 @@
          SECTION 1: Company & Team
     ═══════════════════════════════════════════ -->
     <div class="section-card active" id="section-1">
-      <div class="section-badge">01 / 04 &nbsp;·&nbsp; Company & Team</div>
+      <div class="section-badge">01 / 06 &nbsp;·&nbsp; Company & Team</div>
       <h1 class="section-title">Tell us about your team</h1>
       <p class="section-subtitle">Help us understand who you are and the context you're working in.</p>
 
@@ -769,7 +770,7 @@
          SECTION 2: Primary Use Case
     ═══════════════════════════════════════════ -->
     <div class="section-card" id="section-2">
-      <div class="section-badge">02 / 04 &nbsp;·&nbsp; Primary Use Case</div>
+      <div class="section-badge">02 / 06 &nbsp;·&nbsp; Primary Use Case</div>
       <h1 class="section-title">What will you primarily use AI for?</h1>
       <p class="section-subtitle">Select all that apply — pick as many as relevant to your team.</p>
 
@@ -897,7 +898,7 @@
 
       <div class="nav-buttons">
         <button class="btn btn-secondary" onclick="goTo(1)">← Back</button>
-        <button class="btn btn-primary" onclick="goTo(3)">Next &nbsp;→</button>
+        <button class="btn btn-primary" onclick="goTo(5)">Next &nbsp;→</button>
       </div>
     </div>
 
@@ -905,7 +906,7 @@
          SECTION 3: Current Situation
     ═══════════════════════════════════════════ -->
     <div class="section-card" id="section-3">
-      <div class="section-badge">03 / 04 &nbsp;·&nbsp; Current Situation</div>
+      <div class="section-badge">05 / 06 &nbsp;·&nbsp; Current Situation</div>
       <h1 class="section-title">Your current workflow</h1>
       <p class="section-subtitle">Understanding your existing setup helps us tailor the right solution.</p>
 
@@ -1032,7 +1033,7 @@
       </div>
 
       <div class="nav-buttons">
-        <button class="btn btn-secondary" onclick="goTo(2)">← Back</button>
+        <button class="btn btn-secondary" onclick="goTo(6)">← Back</button>
         <button class="btn btn-primary" onclick="goTo(4)">Next &nbsp;→</button>
       </div>
     </div>
@@ -1041,7 +1042,7 @@
          SECTION 4: Requirements & Timeline
     ═══════════════════════════════════════════ -->
     <div class="section-card" id="section-4">
-      <div class="section-badge">04 / 04 &nbsp;·&nbsp; Requirements & Timeline</div>
+      <div class="section-badge">06 / 06 &nbsp;·&nbsp; Requirements & Contact</div>
       <h1 class="section-title">Scale & timeline</h1>
       <p class="section-subtitle">A few final details to help us scope the right plan for you.</p>
 
@@ -1167,12 +1168,340 @@
       </div>
       <div class="field">
         <label class="field-label" for="contact-phone">Phone number <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">(optional)</span></label>
-        <input type="tel" id="contact-phone" placeholder="+1 555 000 0000" />
+        <input type="tel" id="contact-phone" placeholder="+61 4XX XXX XXX" />
       </div>
 
       <div class="nav-buttons">
         <button class="btn btn-secondary" onclick="goTo(3)">← Back</button>
         <button class="btn btn-primary" onclick="submitForm()">Submit &nbsp;✓</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SECTION 5: Integration & Features
+    ═══════════════════════════════════════════ -->
+    <div class="section-card" id="section-5">
+      <div class="section-badge">03 / 06 &nbsp;·&nbsp; Integration & Features</div>
+      <h1 class="section-title">What do you need the AI to connect to and do?</h1>
+      <p class="section-subtitle">The more specific you are, the more accurate our proposal. Think about how your team spends their day — which apps they open, which tasks take the most time.</p>
+
+      <!-- Q1: Daily apps -->
+      <div class="field" id="f-daily-apps">
+        <label class="field-label">Which software or systems does your team use most on a daily basis? <span class="req">*</span></label>
+        <p class="field-hint">Select all that apply — these are the systems the AI might need to read from, write to, or work alongside.</p>
+        <div class="option-grid cols-2">
+          <label class="check-card">
+            <input type="checkbox" name="daily-apps" value="Email / Calendar (e.g. Outlook, Gmail)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>📧 Email / Calendar (e.g. Outlook, Gmail)</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="daily-apps" value="Instant messaging (e.g. Teams, Slack, Google Chat)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>💬 Messaging (e.g. Teams, Slack, Google Chat)</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="daily-apps" value="CRM / Customer management (e.g. Salesforce, HubSpot, Zoho)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>📋 CRM (e.g. Salesforce, HubSpot, Zoho)</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="daily-apps" value="File storage (e.g. SharePoint, Google Drive, OneDrive)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>📁 File storage (e.g. SharePoint, Google Drive)</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="daily-apps" value="Project management (e.g. Jira, Trello, Monday.com, Asana)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>🗂️ Project mgmt (e.g. Jira, Monday.com, Asana)</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="daily-apps" value="Accounting / ERP (e.g. MYOB, Xero, SAP)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>🏭 Accounting / ERP (e.g. MYOB, Xero, SAP)</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="daily-apps" value="Dev tools (e.g. GitHub, GitLab, IDE)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>💻 Dev tools (e.g. GitHub, GitLab, IDE)</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="daily-apps" value="Company intranet / knowledge base (e.g. internal Wiki, Confluence)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>🌐 Intranet / knowledge base (e.g. Confluence, Wiki)</div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="daily-apps" value="None of the above" id="daily-apps-none" onchange="toggleNoneDailyApps(this)" />
+            <div class="check-card-inner"><div class="check-card-box"></div>None of the above</div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select at least one option.</div>
+      </div>
+
+      <!-- Q2: Integration actions -->
+      <div class="field" id="f-integration-action">
+        <label class="field-label">What do you want the AI to be able to do with these systems? <span class="req">*</span></label>
+        <p class="field-hint">Think about what would save your team the most time.</p>
+        <div class="option-grid" style="grid-template-columns:1fr;">
+          <label class="check-card">
+            <input type="checkbox" name="integration-action" value="Read-only — AI can look up information to answer questions" />
+            <div class="check-card-inner">
+              <div class="check-card-box"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">📖 Read-only — AI looks up information to answer questions</div>
+                <div style="font-size:0.78rem;color:var(--muted);">e.g. "What's the last note on this customer?"</div>
+              </div>
+            </div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="integration-action" value="Write / update — AI can create or modify records in systems" />
+            <div class="check-card-inner">
+              <div class="check-card-box"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">✏️ Write / update — AI can create or modify records in systems</div>
+                <div style="font-size:0.78rem;color:var(--muted);">e.g. "Add this lead to our CRM"</div>
+              </div>
+            </div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="integration-action" value="Trigger notifications — AI automatically notifies relevant people after completing tasks" />
+            <div class="check-card-inner">
+              <div class="check-card-box"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🔔 Trigger notifications — AI sends alerts to the right people</div>
+                <div style="font-size:0.78rem;color:var(--muted);">e.g. Auto-send a Teams or Slack message on completion</div>
+              </div>
+            </div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="integration-action" value="Automated workflows — AI independently completes multi-step tasks end-to-end" />
+            <div class="check-card-inner">
+              <div class="check-card-box"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🔄 Automated workflows — AI handles multi-step tasks end-to-end</div>
+                <div style="font-size:0.78rem;color:var(--muted);">e.g. Receive email → analyse → update CRM → notify account manager</div>
+              </div>
+            </div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="integration-action" value="Not sure — just want to explore" />
+            <div class="check-card-inner">
+              <div class="check-card-box"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🤔 Not sure — just want to explore</div>
+              </div>
+            </div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select at least one option.</div>
+      </div>
+
+      <!-- Q3: Scenario example -->
+      <div class="field" id="f-scenario-example">
+        <label class="field-label" for="scenario-example">Walk us through a real example <span class="req">*</span></label>
+        <p class="field-hint">No need to be technical — describe it like you're explaining to a new colleague. This single example tells us more than any checkbox.</p>
+        <textarea id="scenario-example" placeholder='e.g. "Our sales team manually copies data from emails into our CRM every day — it takes 2 hours. I&apos;d want the AI to read the email, extract the key info, and update HubSpot automatically."
+
+Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want staff to just ask the AI and get an accurate answer instantly."' style="min-height:130px;"></textarea>
+        <div class="field-error-msg">Please describe at least one example scenario.</div>
+      </div>
+
+      <!-- Q4: Target users -->
+      <div class="field" id="f-user-type">
+        <label class="field-label">Who will this AI be open to? <span class="req">*</span></label>
+        <div class="option-grid" style="grid-template-columns:1fr;">
+          <label class="radio-card">
+            <input type="radio" name="user-type" value="Internal employees only" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🏢 Internal employees only</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="user-type" value="Internal employees + partners / suppliers" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🤝 Internal employees + partners / suppliers</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="user-type" value="Customer-facing or public" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🌐 Customer-facing or public (e.g. a support chatbot)</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="user-type" value="Not sure yet" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🤔 Not sure yet</div>
+              </div>
+            </div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select an option.</div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goTo(2)">← Back</button>
+        <button class="btn btn-primary" onclick="goTo(6)">Next &nbsp;→</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SECTION 6: Scale & Usage
+    ═══════════════════════════════════════════ -->
+    <div class="section-card" id="section-6">
+      <div class="section-badge">04 / 06 &nbsp;·&nbsp; Scale & Usage</div>
+      <h1 class="section-title">Help us size the solution</h1>
+      <p class="section-subtitle">These numbers help us estimate the computing power and infrastructure needed. Don't worry about being precise — ballpark figures are fine.</p>
+
+      <!-- Q1: Daily active users -->
+      <div class="field" id="f-daily-users">
+        <label class="field-label">How many people will use the AI on a typical workday? <span class="req">*</span></label>
+        <p class="field-hint">Think of an average workday — how many staff will actually send a message or task to the AI.</p>
+        <div class="option-grid cols-2">
+          <label class="radio-card">
+            <input type="radio" name="daily-users" value="1–10 people per day" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>1–10 people</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="daily-users" value="11–30 people per day" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>11–30 people</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="daily-users" value="31–100 people per day" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>31–100 people</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="daily-users" value="100+ people per day" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>100+ people</div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select an option.</div>
+      </div>
+
+      <!-- Q2: Usage intensity -->
+      <div class="field" id="f-usage-freq">
+        <label class="field-label">How intensively will each person use it? <span class="req">*</span></label>
+        <div class="option-grid" style="grid-template-columns:1fr;">
+          <label class="radio-card">
+            <input type="radio" name="usage-freq" value="Light — a few times a week" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">Light — a few times a week</div>
+                <div style="font-size:0.78rem;color:var(--muted);">Ad-hoc queries or occasional tasks</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="usage-freq" value="Moderate — several times a day" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">Moderate — several times a day</div>
+                <div style="font-size:0.78rem;color:var(--muted);">Part of the regular daily workflow</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="usage-freq" value="Heavy — almost continuously (core workflow)" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">Heavy — almost continuously</div>
+                <div style="font-size:0.78rem;color:var(--muted);">A core part of the workday</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="usage-freq" value="Not sure yet" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">Not sure yet</div>
+              </div>
+            </div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select an option.</div>
+      </div>
+
+      <!-- Q3: Response speed -->
+      <div class="field" id="f-response-speed">
+        <label class="field-label">How fast does the AI need to respond? <span class="req">*</span></label>
+        <div class="option-grid" style="grid-template-columns:1fr;">
+          <label class="radio-card">
+            <input type="radio" name="response-speed" value="Near-instant — feels like a live conversation" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">⚡ Near-instant — feels like a live conversation</div>
+                <div style="font-size:0.78rem;color:var(--muted);">Results in seconds · Important for customer-facing use or tasks where people are waiting at their screen</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="response-speed" value="Within half a minute — acceptable for most tasks" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🕐 Within half a minute — acceptable for most tasks</div>
+                <div style="font-size:0.78rem;color:var(--muted);">Fine for drafting, summarising, and answering questions</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="response-speed" value="A few minutes is fine — background or batch tasks" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">⏳ A few minutes is fine — background or batch tasks</div>
+                <div style="font-size:0.78rem;color:var(--muted);">Batch jobs, overnight reports, non-urgent tasks</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="response-speed" value="Not sure" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🤔 Not sure</div>
+              </div>
+            </div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select an option.</div>
+      </div>
+
+      <!-- Q4: Future scale -->
+      <div class="field" id="f-future-scale">
+        <label class="field-label">How do you expect usage to grow over the next 2 years? <span class="req">*</span></label>
+        <div class="option-grid cols-2">
+          <label class="radio-card">
+            <input type="radio" name="future-scale" value="Stay roughly the same size" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>Stay roughly the same size</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="future-scale" value="Grow moderately (2–3× the current team)" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>Grow moderately (2–3× current scale)</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="future-scale" value="Grow a lot — company-wide rollout planned" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>Grow significantly — company-wide rollout planned</div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="future-scale" value="Not sure" />
+            <div class="radio-card-inner"><div class="radio-card-dot"></div>Not sure</div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select an option.</div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goTo(5)">← Back</button>
+        <button class="btn btn-primary" onclick="goTo(3)">Next &nbsp;→</button>
       </div>
     </div>
 
@@ -1197,12 +1526,22 @@
       </div>
 
       <div class="summary-section">
-        <div class="summary-section-title">03 &nbsp; Current Situation</div>
+        <div class="summary-section-title">03 &nbsp; Integration & Features</div>
+        <div id="sum-section-5"></div>
+      </div>
+
+      <div class="summary-section">
+        <div class="summary-section-title">04 &nbsp; Scale & Usage</div>
+        <div id="sum-section-6"></div>
+      </div>
+
+      <div class="summary-section">
+        <div class="summary-section-title">05 &nbsp; Current Situation</div>
         <div id="sum-section-3"></div>
       </div>
 
       <div class="summary-section">
-        <div class="summary-section-title">04 &nbsp; Requirements & Timeline</div>
+        <div class="summary-section-title">06 &nbsp; Requirements & Contact</div>
         <div id="sum-section-4"></div>
       </div>
 
@@ -1221,7 +1560,8 @@
   <script>
     // ─── State ───────────────────────────────────────────
     let currentSection = 1;
-    const totalSections = 4;
+    const totalSections = 6;
+    const SECTION_ORDER = [1, 2, 5, 6, 3, 4]; // logical order
 
     // ─── Navigation ──────────────────────────────────────
     function goTo(n) {
@@ -1241,9 +1581,10 @@
     }
 
     function updateProgress() {
-      const pct = (currentSection / totalSections) * 100;
+      const logicalStep = SECTION_ORDER.indexOf(currentSection) + 1;
+      const pct = (logicalStep / totalSections) * 100;
       document.getElementById('progress-bar').style.width = pct + '%';
-      document.getElementById('step-num').textContent = currentSection;
+      document.getElementById('step-num').textContent = logicalStep;
     }
 
     // ─── Validation ──────────────────────────────────────
@@ -1311,6 +1652,28 @@
         if (!emailOk) { showError('f-email'); valid = false; } else clearErrors('f-email');
       }
 
+      if (n === 5) {
+        const da = document.querySelectorAll('input[name="daily-apps"]:checked');
+        if (da.length === 0) { showError('f-daily-apps'); valid = false; } else clearErrors('f-daily-apps');
+        const ia = document.querySelectorAll('input[name="integration-action"]:checked');
+        if (ia.length === 0) { showError('f-integration-action'); valid = false; } else clearErrors('f-integration-action');
+        const se = document.getElementById('scenario-example').value.trim();
+        if (!se) { showError('f-scenario-example'); valid = false; } else clearErrors('f-scenario-example');
+        const ut = document.querySelector('input[name="user-type"]:checked');
+        if (!ut) { showError('f-user-type'); valid = false; } else clearErrors('f-user-type');
+      }
+
+      if (n === 6) {
+        const du = document.querySelector('input[name="daily-users"]:checked');
+        if (!du) { showError('f-daily-users'); valid = false; } else clearErrors('f-daily-users');
+        const uf = document.querySelector('input[name="usage-freq"]:checked');
+        if (!uf) { showError('f-usage-freq'); valid = false; } else clearErrors('f-usage-freq');
+        const rs = document.querySelector('input[name="response-speed"]:checked');
+        if (!rs) { showError('f-response-speed'); valid = false; } else clearErrors('f-response-speed');
+        const fs = document.querySelector('input[name="future-scale"]:checked');
+        if (!fs) { showError('f-future-scale'); valid = false; } else clearErrors('f-future-scale');
+      }
+
       return valid;
     }
 
@@ -1345,6 +1708,35 @@
     // Attach to all use-case checkboxes
     document.querySelectorAll('input[name="use-case"]').forEach(cb => {
       cb.addEventListener('change', toggleCodingFields);
+    });
+
+    // Show doc-volume when knowledge base is needed
+    document.querySelectorAll('input[name="knowledge-base"]').forEach(rb => {
+      rb.addEventListener('change', function() {
+        const wrap = document.getElementById('f-doc-volume-wrap');
+        if (this.value === 'No — general AI capability is enough') {
+          wrap.classList.remove('visible');
+        } else {
+          wrap.classList.add('visible');
+        }
+      });
+    });
+
+    function toggleNoneDailyApps(el) {
+      if (el.checked) {
+        document.querySelectorAll('input[name="daily-apps"]').forEach(cb => {
+          if (cb !== el) cb.checked = false;
+        });
+      }
+    }
+    document.querySelectorAll('input[name="daily-apps"]').forEach(cb => {
+      if (cb.id !== 'daily-apps-none') {
+        cb.addEventListener('change', function() {
+          if (this.checked) {
+            document.getElementById('daily-apps-none').checked = false;
+          }
+        });
+      }
     });
 
     function toggleNoneInteg(el) {
@@ -1418,6 +1810,15 @@
         contact_method:     (document.querySelector('input[name="contact-method"]:checked') || {}).value || '',
         contact_email:      document.getElementById('contact-email').value.trim(),
         contact_phone:      document.getElementById('contact-phone').value.trim(),
+        daily_apps:          Array.from(document.querySelectorAll('input[name="daily-apps"]:checked')).map(c => c.value),
+        integration_actions: Array.from(document.querySelectorAll('input[name="integration-action"]:checked')).map(c => c.value),
+        scenario_example:    document.getElementById('scenario-example').value.trim(),
+        user_type:           (document.querySelector('input[name="user-type"]:checked') || {}).value || '',
+        lang_support:        (document.querySelector('input[name="lang-support"]:checked') || {}).value || '',
+        daily_users:         (document.querySelector('input[name="daily-users"]:checked') || {}).value || '',
+        usage_frequency:     (document.querySelector('input[name="usage-freq"]:checked') || {}).value || '',
+        response_speed:      (document.querySelector('input[name="response-speed"]:checked') || {}).value || '',
+        future_scale:        (document.querySelector('input[name="future-scale"]:checked') || {}).value || '',
       };
 
       try {
@@ -1518,6 +1919,43 @@
         row('Preferred contact', contactMethod) +
         row('Email', contactEmail) +
         row('Phone', contactPhone !== '—' ? contactPhone : '—');
+
+      // Section 5 — Feature Scope
+      const accessChannels = Array.from(document.querySelectorAll('input[name="access-channel"]:checked')).map(c => c.value);
+      const accessList = accessChannels.length
+        ? accessChannels.map(u => `<span style="display:inline-block;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);border-radius:6px;padding:2px 10px;font-size:0.82rem;margin:2px;">${u}</span>`).join(' ')
+        : '—';
+      const knowledgeBase = (document.querySelector('input[name="knowledge-base"]:checked') || {}).value || '—';
+      const docVol        = (document.querySelector('input[name="doc-volume"]:checked') || {}).value || '—';
+      const automation    = (document.querySelector('input[name="automation"]:checked') || {}).value || '—';
+      const persona       = (document.querySelector('input[name="persona"]:checked') || {}).value || '—';
+      const langSupport   = (document.querySelector('input[name="lang-support"]:checked') || {}).value || '—';
+      const scopeNotes    = document.getElementById('scope-notes').value.trim() || '—';
+
+      let sec5 = row('Access channels', accessList) +
+        row('Internal knowledge base', knowledgeBase);
+      if (knowledgeBase !== 'No — general AI capability is enough' && knowledgeBase !== '—') {
+        sec5 += row('Content volume', docVol);
+      }
+      sec5 += row('Automation level', automation) +
+        row('Custom persona / branding', persona) +
+        row('Language support', langSupport) +
+        row('Additional scope notes', scopeNotes.replace(/\n/g, '<br>'));
+      document.getElementById('sum-section-5').innerHTML = sec5;
+
+      // Section 6 — Scale & Budget
+      const dailyUsers  = (document.querySelector('input[name="daily-users"]:checked') || {}).value || '—';
+      const usageFreq   = (document.querySelector('input[name="usage-freq"]:checked') || {}).value || '—';
+      const respSpeed   = (document.querySelector('input[name="response-speed"]:checked') || {}).value || '—';
+      const futureScale = (document.querySelector('input[name="future-scale"]:checked') || {}).value || '—';
+      const budgetRange = (document.querySelector('input[name="budget"]:checked') || {}).value || '—';
+
+      document.getElementById('sum-section-6').innerHTML =
+        row('Daily active users', dailyUsers) +
+        row('Usage intensity', usageFreq) +
+        row('Response speed needed', respSpeed) +
+        row('Expected growth', futureScale) +
+        row('Budget range', budgetRange);
     }
 
     // ─── Update slider track fill ─────────────────────────
