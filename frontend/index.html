@@ -633,6 +633,196 @@
       box-shadow: 0 8px 32px rgba(59,130,246,0.55);
     }
 
+    /* ─── Workflow Builder ─── */
+    .workflow-builder {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .workflow-chain {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .workflow-step {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+    }
+    .workflow-step-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 40px;
+      flex-shrink: 0;
+    }
+    .workflow-step-node {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--purple);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 10px;
+    }
+    .workflow-step-line {
+      width: 2px;
+      flex: 1;
+      background: linear-gradient(to bottom, var(--purple), rgba(139,92,246,0.2));
+      margin: 4px auto 0;
+      min-height: 20px;
+    }
+    .workflow-step-line.last { display: none; }
+    .workflow-step-content {
+      flex: 1;
+      padding: 8px 0 8px 12px;
+    }
+    .workflow-step-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .workflow-step-inputs {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .workflow-step-inputs input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+    .workflow-step-inputs input:focus {
+      outline: none;
+      border-color: var(--purple);
+    }
+    .workflow-step-inputs input::placeholder { color: var(--muted); }
+    .workflow-step-inputs input.step-name {
+      font-weight: 600;
+    }
+    .workflow-step-inputs input.step-detail {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .workflow-step-delete {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      margin-top: 10px;
+      transition: border-color 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .workflow-step-delete:hover { border-color: #ef4444; color: #ef4444; }
+    .workflow-arrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 2px 0 2px 52px;
+      color: var(--purple-light);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      opacity: 0.7;
+      user-select: none;
+    }
+    .workflow-add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      padding: 8px 16px;
+      border: 1.5px dashed rgba(139,92,246,0.4);
+      border-radius: 8px;
+      background: rgba(139,92,246,0.04);
+      color: var(--purple-light);
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .workflow-add-btn:hover {
+      border-color: var(--purple);
+      background: rgba(139,92,246,0.1);
+    }
+    .workflow-flows-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .workflow-flow-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px 12px;
+      background: rgba(139,92,246,0.03);
+      position: relative;
+    }
+    .workflow-flow-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .workflow-flow-title-input {
+      flex: 1;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text);
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      padding: 0;
+      outline: none;
+      border-bottom: 1.5px dashed rgba(139,92,246,0.3);
+    }
+    .workflow-flow-title-input::placeholder { color: var(--muted); font-weight: 400; }
+    .workflow-flow-delete-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      margin-left: 12px;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .workflow-flow-delete-btn:hover { border-color: #ef4444; color: #ef4444; }
+    .workflow-new-flow-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      padding: 10px 18px;
+      border: 1.5px solid rgba(139,92,246,0.35);
+      border-radius: 8px;
+      background: rgba(139,92,246,0.06);
+      color: var(--purple-light);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .workflow-new-flow-btn:hover {
+      border-color: var(--purple);
+      background: rgba(139,92,246,0.12);
+    }
+
     /* ─── Responsive ─── */
     @media (max-width: 640px) {
       header { padding: 0 20px; }
@@ -700,7 +890,7 @@
          SECTION 1: Company & Team
     ═══════════════════════════════════════════ -->
     <div class="section-card active" id="section-1">
-      <div class="section-badge">01 / 06 &nbsp;·&nbsp; Company & Team</div>
+      <div class="section-badge">01 / 05 &nbsp;·&nbsp; Company & Team</div>
       <h1 class="section-title">Tell us about your team</h1>
       <p class="section-subtitle">Help us understand who you are and the context you're working in.</p>
 
@@ -770,7 +960,7 @@
          SECTION 2: Primary Use Case
     ═══════════════════════════════════════════ -->
     <div class="section-card" id="section-2">
-      <div class="section-badge">02 / 06 &nbsp;·&nbsp; Primary Use Case</div>
+      <div class="section-badge">02 / 05 &nbsp;·&nbsp; Primary Use Case</div>
       <h1 class="section-title">What will you primarily use AI for?</h1>
       <p class="section-subtitle">Select all that apply — pick as many as relevant to your team.</p>
 
@@ -902,193 +1092,14 @@
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         SECTION 3: Current Situation
-    ═══════════════════════════════════════════ -->
-    <div class="section-card" id="section-3">
-      <div class="section-badge">05 / 06 &nbsp;·&nbsp; Current Situation</div>
-      <h1 class="section-title">Your current workflow</h1>
-      <p class="section-subtitle">Understanding your existing setup helps us tailor the right solution.</p>
-
-      <!-- Current AI usage -->
-      <div class="field" id="f-ai-usage">
-        <label class="field-label">Do you currently use any AI tools? <span class="req">*</span></label>
-        <div class="option-grid cols-3">
-          <label class="radio-card">
-            <input type="radio" name="ai-usage" value="Yes" onchange="toggleCurrentTools()" />
-            <div class="radio-card-inner"><div class="radio-card-dot"></div>Yes</div>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="ai-usage" value="Sometimes" onchange="toggleCurrentTools()" />
-            <div class="radio-card-inner"><div class="radio-card-dot"></div>Sometimes</div>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="ai-usage" value="No" onchange="toggleCurrentTools()" />
-            <div class="radio-card-inner"><div class="radio-card-dot"></div>No</div>
-          </label>
-        </div>
-        <div class="field-error-msg">Please select an option.</div>
-      </div>
-
-      <!-- Which tools (conditional) -->
-      <div class="conditional field" id="current-tools-field">
-        <label class="field-label" for="current-tools">Which tools do you currently use?</label>
-        <input type="text" id="current-tools" placeholder="e.g. ChatGPT, Copilot, Notion AI…" />
-      </div>
-
-      <!-- Pain points -->
-      <div class="field" id="f-pain-point">
-        <label class="field-label" for="pain-point">What is your biggest pain point today? <span class="req">*</span></label>
-        <textarea id="pain-point" placeholder="Describe the challenges or inefficiencies your team faces…"></textarea>
-        <div class="field-error-msg">Please describe your biggest pain point.</div>
-      </div>
-
-      <!-- Data privacy -->
-      <div class="field" id="f-privacy">
-        <label class="field-label">Where will the AI be deployed? <span class="req">*</span></label>
-        <div class="option-grid" style="grid-template-columns: 1fr;">
-          <label class="radio-card">
-            <input type="radio" name="privacy" value="On-premise (fully air-gapped)" />
-            <div class="radio-card-inner">
-              <div class="radio-card-dot"></div>
-              <div>
-                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🖥️ On-Premise (Air-Gapped)</div>
-                <div style="font-size:0.78rem;color:var(--muted);">Fully self-hosted on internal servers — no internet connection required, data never leaves your network</div>
-              </div>
-            </div>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="privacy" value="On-premise (internet access allowed)" />
-            <div class="radio-card-inner">
-              <div class="radio-card-dot"></div>
-              <div>
-                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🔒 On-Premise (with Internet Access)</div>
-                <div style="font-size:0.78rem;color:var(--muted);">Self-hosted on internal servers, but internet access is available for web search and API calls</div>
-              </div>
-            </div>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="privacy" value="Private cloud" />
-            <div class="radio-card-inner">
-              <div class="radio-card-dot"></div>
-              <div>
-                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">☁️ Private Cloud</div>
-                <div style="font-size:0.78rem;color:var(--muted);">Dedicated cloud instance — isolated environment, managed by us</div>
-              </div>
-            </div>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="privacy" value="Flexible (SaaS cloud is fine)" />
-            <div class="radio-card-inner">
-              <div class="radio-card-dot"></div>
-              <div>
-                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🌐 Flexible (SaaS)</div>
-                <div style="font-size:0.78rem;color:var(--muted);">Standard cloud hosting is acceptable</div>
-              </div>
-            </div>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="privacy" value="Not sure" />
-            <div class="radio-card-inner">
-              <div class="radio-card-dot"></div>
-              <div>
-                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🤔 Not Sure / Need Guidance</div>
-                <div style="font-size:0.78rem;color:var(--muted);">I'm not sure what fits best — we'll help you decide</div>
-              </div>
-            </div>
-          </label>
-        </div>
-        <div class="field-error-msg">Please select a deployment preference.</div>
-      </div>
-
-      <!-- Integrations -->
-      <div class="field" id="f-integrations">
-        <label class="field-label">Do you need to integrate with existing systems?</label>
-        <div class="option-grid" style="grid-template-columns: 1fr 1fr;">
-          <label class="check-card">
-            <input type="checkbox" name="integration" value="Microsoft Exchange / Outlook" />
-            <div class="check-card-inner"><div class="check-card-box"></div>Microsoft Exchange / Outlook</div>
-          </label>
-          <label class="check-card">
-            <input type="checkbox" name="integration" value="CRM (Salesforce, HubSpot, etc.)" />
-            <div class="check-card-inner"><div class="check-card-box"></div>CRM (Salesforce, HubSpot…)</div>
-          </label>
-          <label class="check-card">
-            <input type="checkbox" name="integration" value="LinkedIn" />
-            <div class="check-card-inner"><div class="check-card-box"></div>LinkedIn</div>
-          </label>
-          <label class="check-card">
-            <input type="checkbox" name="integration" value="Custom internal tools" />
-            <div class="check-card-inner"><div class="check-card-box"></div>Custom internal tools</div>
-          </label>
-          <label class="check-card">
-            <input type="checkbox" name="integration" value="None" id="integ-none" onchange="toggleNoneInteg(this)" />
-            <div class="check-card-inner"><div class="check-card-box"></div>None</div>
-          </label>
-          <label class="check-card">
-            <input type="checkbox" name="integration" value="Not sure" id="integ-notsure" onchange="toggleNoneInteg(this)" />
-            <div class="check-card-inner"><div class="check-card-box"></div>I'm not sure</div>
-          </label>
-        </div>
-      </div>
-
-      <div class="nav-buttons">
-        <button class="btn btn-secondary" onclick="goTo(6)">← Back</button>
-        <button class="btn btn-primary" onclick="goTo(4)">Next &nbsp;→</button>
-      </div>
-    </div>
 
     <!-- ═══════════════════════════════════════════
          SECTION 4: Requirements & Timeline
     ═══════════════════════════════════════════ -->
     <div class="section-card" id="section-4">
-      <div class="section-badge">06 / 06 &nbsp;·&nbsp; Requirements & Contact</div>
-      <h1 class="section-title">Scale & timeline</h1>
+      <div class="section-badge">05 / 05 &nbsp;·&nbsp; Requirements & Contact</div>
+      <h1 class="section-title">Requirements & contact</h1>
       <p class="section-subtitle">A few final details to help us scope the right plan for you.</p>
-
-      <!-- Number of users (slider) -->
-      <div class="field">
-        <label class="field-label">Number of users</label>
-        <div class="slider-wrap">
-          <div class="slider-header">
-            <span class="slider-label-sm">Drag to set</span>
-            <div class="slider-value"><span id="slider-val">25</span> users</div>
-          </div>
-          <input type="range" id="user-slider" min="1" max="200" value="25"
-            oninput="document.getElementById('slider-val').textContent = this.value" />
-          <div class="slider-ticks">
-            <span>1</span>
-            <span>50</span>
-            <span>100</span>
-            <span>150</span>
-            <span>200</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Timeline -->
-      <div class="field" id="f-timeline">
-        <label class="field-label">How soon are you looking to get started? <span class="req">*</span></label>
-        <div class="option-grid cols-2">
-          <label class="radio-card">
-            <input type="radio" name="timeline" value="ASAP" />
-            <div class="radio-card-inner"><div class="radio-card-dot"></div>ASAP</div>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="timeline" value="Within 1 month" />
-            <div class="radio-card-inner"><div class="radio-card-dot"></div>Within 1 month</div>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="timeline" value="1–3 months" />
-            <div class="radio-card-inner"><div class="radio-card-dot"></div>1–3 months</div>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="timeline" value="Just exploring" />
-            <div class="radio-card-inner"><div class="radio-card-dot"></div>Just exploring</div>
-          </label>
-        </div>
-        <div class="field-error-msg">Please select a timeline.</div>
-      </div>
 
       <!-- Priority dropdowns -->
       <div class="field" id="f-priority">
@@ -1172,7 +1183,7 @@
       </div>
 
       <div class="nav-buttons">
-        <button class="btn btn-secondary" onclick="goTo(3)">← Back</button>
+        <button class="btn btn-secondary" onclick="goTo(6)">← Back</button>
         <button class="btn btn-primary" onclick="submitForm()">Submit &nbsp;✓</button>
       </div>
     </div>
@@ -1181,9 +1192,57 @@
          SECTION 5: Integration & Features
     ═══════════════════════════════════════════ -->
     <div class="section-card" id="section-5">
-      <div class="section-badge">03 / 06 &nbsp;·&nbsp; Integration & Features</div>
+      <div class="section-badge">03 / 05 &nbsp;·&nbsp; Integration & Features</div>
       <h1 class="section-title">What do you need the AI to connect to and do?</h1>
       <p class="section-subtitle">The more specific you are, the more accurate our proposal. Think about how your team spends their day — which apps they open, which tasks take the most time.</p>
+
+      <!-- Q0: AI context — product vs internal -->
+      <div class="field" id="f-ai-context">
+        <label class="field-label">How will you primarily deploy this AI? <span class="req">*</span></label>
+        <p class="field-hint">This helps us understand whether we're designing an internal productivity tool or a customer-facing product.</p>
+        <div class="option-grid" style="grid-template-columns:1fr;">
+          <label class="radio-card">
+            <input type="radio" name="ai-context" value="Embedded in our product or service (customer-facing)" onchange="onAiContextChange(this)" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🚀 Embedded in our product or service</div>
+                <div style="font-size:0.78rem;color:var(--muted);">The AI is a feature of something we sell or offer to our customers (e.g. a chatbot on our platform, AI inside our SaaS app)</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="ai-context" value="Internal tool for our team" onchange="onAiContextChange(this)" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🏢 Internal tool for our team</div>
+                <div style="font-size:0.78rem;color:var(--muted);">The AI helps our own staff work faster — not exposed to end customers</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="ai-context" value="Both — embedded product and internal use" onchange="onAiContextChange(this)" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">⚡ Both — product and internal</div>
+                <div style="font-size:0.78rem;color:var(--muted);">We need AI in our customer-facing product and internally for our team</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="ai-context" value="Not sure yet" onchange="onAiContextChange(this)" />
+            <div class="radio-card-inner">
+              <div class="radio-card-dot"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🤔 Not sure yet</div>
+              </div>
+            </div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select an option.</div>
+      </div>
 
       <!-- Q1: Daily apps -->
       <div class="field" id="f-daily-apps">
@@ -1228,6 +1287,19 @@
           </label>
         </div>
         <div class="field-error-msg">Please select at least one option.</div>
+      </div>
+
+      <!-- Q1b: Software details (free text) -->
+      <div class="field" id="f-software-details">
+        <label class="field-label" for="software-details">Tell us about the specific tools you use <span class="req">*</span></label>
+        <p class="field-hint">List the actual software names and briefly describe what each one is used for. This helps us understand your existing stack and design the right integrations.</p>
+        <textarea id="software-details" placeholder='e.g.
+• HubSpot — our CRM, used by the sales team to manage leads and track deals
+• Outlook / Exchange — company email and calendar for all staff
+• SharePoint — where we store internal documents and HR policies
+• Xero — accounting and invoicing, used by the finance team
+• Custom job management system (internal) — tracks job orders from creation to completion' style="min-height:140px;"></textarea>
+        <div class="field-error-msg">Please describe your key systems.</div>
       </div>
 
       <!-- Q2: Integration actions -->
@@ -1294,6 +1366,8 @@
         <p class="field-hint">No need to be technical — describe it like you're explaining to a new colleague. This single example tells us more than any checkbox.</p>
         <textarea id="scenario-example" placeholder='e.g. "Our sales team manually copies data from emails into our CRM every day — it takes 2 hours. I&apos;d want the AI to read the email, extract the key info, and update HubSpot automatically."
 
+Or: "We&apos;re building a booking platform — we want an AI assistant embedded in the app so customers can describe what they need and the AI finds and confirms the right slot for them."
+
 Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want staff to just ask the AI and get an accurate answer instantly."' style="min-height:130px;"></textarea>
         <div class="field-error-msg">Please describe at least one example scenario.</div>
       </div>
@@ -1303,7 +1377,7 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
         <label class="field-label">Who will this AI be open to? <span class="req">*</span></label>
         <div class="option-grid" style="grid-template-columns:1fr;">
           <label class="radio-card">
-            <input type="radio" name="user-type" value="Internal employees only" />
+            <input type="radio" name="user-type" value="Internal employees only" onchange="onUserTypeChange(this)" />
             <div class="radio-card-inner">
               <div class="radio-card-dot"></div>
               <div>
@@ -1312,7 +1386,7 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
             </div>
           </label>
           <label class="radio-card">
-            <input type="radio" name="user-type" value="Internal employees + partners / suppliers" />
+            <input type="radio" name="user-type" value="Internal employees + partners / suppliers" onchange="onUserTypeChange(this)" />
             <div class="radio-card-inner">
               <div class="radio-card-dot"></div>
               <div>
@@ -1321,16 +1395,17 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
             </div>
           </label>
           <label class="radio-card">
-            <input type="radio" name="user-type" value="Customer-facing or public" />
+            <input type="radio" name="user-type" value="Customer-facing or public" onchange="onUserTypeChange(this)" />
             <div class="radio-card-inner">
               <div class="radio-card-dot"></div>
               <div>
-                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🌐 Customer-facing or public (e.g. a support chatbot)</div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🌐 Customer-facing or public</div>
+                <div style="font-size:0.78rem;color:var(--muted);">e.g. a support chatbot, AI assistant in your product</div>
               </div>
             </div>
           </label>
           <label class="radio-card">
-            <input type="radio" name="user-type" value="Not sure yet" />
+            <input type="radio" name="user-type" value="Not sure yet" onchange="onUserTypeChange(this)" />
             <div class="radio-card-inner">
               <div class="radio-card-dot"></div>
               <div>
@@ -1340,6 +1415,72 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
           </label>
         </div>
         <div class="field-error-msg">Please select an option.</div>
+      </div>
+
+      <!-- Q4b: Customer-facing detail (shown when customer-facing selected) -->
+      <div class="field" id="f-customer-facing-detail" style="display:none;">
+        <label class="field-label">Tell us more about your customer-facing AI <span class="req">*</span></label>
+        <p class="field-hint">Select all that apply.</p>
+        <div class="option-grid" style="grid-template-columns:1fr;">
+          <label class="check-card">
+            <input type="checkbox" name="customer-facing-detail" value="Needs to reflect our brand voice and tone" />
+            <div class="check-card-inner">
+              <div class="check-card-box"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🎨 Needs to reflect our brand voice and tone</div>
+                <div style="font-size:0.78rem;color:var(--muted);">Custom persona, language style, or identity guidelines</div>
+              </div>
+            </div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="customer-facing-detail" value="Must answer from our own knowledge base or product docs" />
+            <div class="check-card-inner">
+              <div class="check-card-box"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">📚 Must answer from our own knowledge base or product docs</div>
+                <div style="font-size:0.78rem;color:var(--muted);">Grounded in your specific content, not general AI knowledge</div>
+              </div>
+            </div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="customer-facing-detail" value="Will handle transactions or actions on behalf of customers" />
+            <div class="check-card-inner">
+              <div class="check-card-box"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">⚙️ Will handle transactions or actions on behalf of customers</div>
+                <div style="font-size:0.78rem;color:var(--muted);">e.g. booking, ordering, updating account details</div>
+              </div>
+            </div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="customer-facing-detail" value="Needs to support multiple languages" />
+            <div class="check-card-inner">
+              <div class="check-card-box"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🌍 Needs to support multiple languages</div>
+              </div>
+            </div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" name="customer-facing-detail" value="Must have strict guardrails — avoid off-topic or harmful responses" />
+            <div class="check-card-inner">
+              <div class="check-card-box"></div>
+              <div>
+                <div style="font-weight:600;color:var(--text);font-size:0.88rem;">🛡️ Must have strict guardrails</div>
+                <div style="font-size:0.78rem;color:var(--muted);">Avoid off-topic, inaccurate, or harmful responses in a public context</div>
+              </div>
+            </div>
+          </label>
+        </div>
+        <div class="field-error-msg">Please select at least one option.</div>
+      </div>
+
+      <!-- Workflow Builder -->
+      <div class="field" id="f-workflow-builder">
+        <label class="field-label">Map out your key business workflows <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">(optional but very helpful)</span></label>
+        <p class="field-hint">Describe the step-by-step flow of how work gets done today — and where you'd like AI to step in. Add as many flows as you need (e.g. a sales flow, a support flow, an onboarding flow).</p>
+        <div class="workflow-flows-list" id="workflow-flows-list"></div>
+        <button type="button" class="workflow-new-flow-btn" onclick="addWorkflowFlow()">＋ Add a workflow</button>
       </div>
 
       <div class="nav-buttons">
@@ -1352,7 +1493,7 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
          SECTION 6: Scale & Usage
     ═══════════════════════════════════════════ -->
     <div class="section-card" id="section-6">
-      <div class="section-badge">04 / 06 &nbsp;·&nbsp; Scale & Usage</div>
+      <div class="section-badge">04 / 05 &nbsp;·&nbsp; Scale & Usage</div>
       <h1 class="section-title">Help us size the solution</h1>
       <p class="section-subtitle">These numbers help us estimate the computing power and infrastructure needed. Don't worry about being precise — ballpark figures are fine.</p>
 
@@ -1501,7 +1642,7 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
 
       <div class="nav-buttons">
         <button class="btn btn-secondary" onclick="goTo(5)">← Back</button>
-        <button class="btn btn-primary" onclick="goTo(3)">Next &nbsp;→</button>
+        <button class="btn btn-primary" onclick="goTo(4)">Next &nbsp;→</button>
       </div>
     </div>
 
@@ -1535,13 +1676,9 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
         <div id="sum-section-6"></div>
       </div>
 
-      <div class="summary-section">
-        <div class="summary-section-title">05 &nbsp; Current Situation</div>
-        <div id="sum-section-3"></div>
-      </div>
 
       <div class="summary-section">
-        <div class="summary-section-title">06 &nbsp; Requirements & Contact</div>
+        <div class="summary-section-title">05 &nbsp; Requirements & Contact</div>
         <div id="sum-section-4"></div>
       </div>
 
@@ -1560,8 +1697,8 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
   <script>
     // ─── State ───────────────────────────────────────────
     let currentSection = 1;
-    const totalSections = 6;
-    const SECTION_ORDER = [1, 2, 5, 6, 3, 4]; // logical order
+    const totalSections = 5;
+    const SECTION_ORDER = [1, 2, 5, 6, 4]; // logical order
 
     // ─── Navigation ──────────────────────────────────────
     function goTo(n) {
@@ -1617,18 +1754,8 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
         if (uc.length === 0) { showError('f-use-cases'); valid = false; } else clearErrors('f-use-cases');
       }
 
-      if (n === 3) {
-        const au = document.querySelector('input[name="ai-usage"]:checked');
-        if (!au) { showError('f-ai-usage'); valid = false; } else clearErrors('f-ai-usage');
-        const pp = document.getElementById('pain-point').value.trim();
-        if (!pp) { showError('f-pain-point'); valid = false; } else clearErrors('f-pain-point');
-        const priv = document.querySelector('input[name="privacy"]:checked');
-        if (!priv) { showError('f-privacy'); valid = false; } else clearErrors('f-privacy');
-      }
 
       if (n === 4) {
-        const tl = document.querySelector('input[name="timeline"]:checked');
-        if (!tl) { showError('f-timeline'); valid = false; } else clearErrors('f-timeline');
         // Priority validation
         const p1 = document.getElementById('priority-1').value;
         const p2 = document.getElementById('priority-2').value;
@@ -1653,14 +1780,25 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
       }
 
       if (n === 5) {
+        const ac = document.querySelector('input[name="ai-context"]:checked');
+        if (!ac) { showError('f-ai-context'); valid = false; } else clearErrors('f-ai-context');
         const da = document.querySelectorAll('input[name="daily-apps"]:checked');
         if (da.length === 0) { showError('f-daily-apps'); valid = false; } else clearErrors('f-daily-apps');
+        const sd = document.getElementById('software-details').value.trim();
+        if (!sd) { showError('f-software-details'); valid = false; } else clearErrors('f-software-details');
         const ia = document.querySelectorAll('input[name="integration-action"]:checked');
         if (ia.length === 0) { showError('f-integration-action'); valid = false; } else clearErrors('f-integration-action');
         const se = document.getElementById('scenario-example').value.trim();
         if (!se) { showError('f-scenario-example'); valid = false; } else clearErrors('f-scenario-example');
         const ut = document.querySelector('input[name="user-type"]:checked');
         if (!ut) { showError('f-user-type'); valid = false; } else clearErrors('f-user-type');
+        // Customer-facing detail required when customer-facing selected
+        if (ut && ut.value === 'Customer-facing or public') {
+          const cfd = document.querySelectorAll('input[name="customer-facing-detail"]:checked');
+          if (cfd.length === 0) { showError('f-customer-facing-detail'); valid = false; } else clearErrors('f-customer-facing-detail');
+        } else {
+          clearErrors('f-customer-facing-detail');
+        }
       }
 
       if (n === 6) {
@@ -1678,15 +1816,6 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
     }
 
     // ─── Conditional Fields ──────────────────────────────
-    function toggleCurrentTools() {
-      const val = document.querySelector('input[name="ai-usage"]:checked');
-      const field = document.getElementById('current-tools-field');
-      if (val && (val.value === 'Yes' || val.value === 'Sometimes')) {
-        field.classList.add('visible');
-      } else {
-        field.classList.remove('visible');
-      }
-    }
 
     function toggleOtherUsecase() {
       const chk = document.getElementById('uc-other-chk');
@@ -1722,6 +1851,143 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
       });
     });
 
+    function onAiContextChange(el) {
+      // No sub-questions needed for ai-context, just a simple radio
+    }
+
+    function onUserTypeChange(el) {
+      const wrap = document.getElementById('f-customer-facing-detail');
+      if (el.value === 'Customer-facing or public') {
+        wrap.style.display = '';
+      } else {
+        wrap.style.display = 'none';
+        document.querySelectorAll('input[name="customer-facing-detail"]').forEach(cb => cb.checked = false);
+      }
+    }
+
+    // ─── Workflow Builder ────────────────────────────
+    let workflowFlowCount = 0;
+
+    function addWorkflowFlow() {
+      workflowFlowCount++;
+      const flowId = 'wf-flow-' + workflowFlowCount;
+      const card = document.createElement('div');
+      card.className = 'workflow-flow-card';
+      card.id = flowId;
+      card.innerHTML = `
+        <div class="workflow-flow-header">
+          <input class="workflow-flow-title-input" type="text" placeholder="Flow name (e.g. Sales process, Support ticket, Onboarding)" />
+          <button type="button" class="workflow-flow-delete-btn" onclick="removeWorkflowFlow('${flowId}')">✕ Remove</button>
+        </div>
+        <div class="workflow-builder">
+          <div class="workflow-chain" id="${flowId}-chain"></div>
+          <button type="button" class="workflow-add-btn" onclick="addWorkflowStep('${flowId}-chain')">＋ Add step</button>
+        </div>`;
+      document.getElementById('workflow-flows-list').appendChild(card);
+      // Add two starter steps
+      addWorkflowStep(flowId + '-chain');
+      addWorkflowStep(flowId + '-chain');
+    }
+
+    function removeWorkflowFlow(flowId) {
+      const el = document.getElementById(flowId);
+      if (el) el.remove();
+    }
+
+    let stepCounters = {};
+    function addWorkflowStep(chainId) {
+      if (!stepCounters[chainId]) stepCounters[chainId] = 0;
+      stepCounters[chainId]++;
+      const stepNum = stepCounters[chainId];
+      const stepId = chainId + '-step-' + stepNum;
+
+      const chain = document.getElementById(chainId);
+
+      // Update last line visibility before adding new step
+      const existingSteps = chain.querySelectorAll('.workflow-step');
+      existingSteps.forEach(s => {
+        const line = s.querySelector('.workflow-step-line');
+        if (line) line.classList.remove('last');
+      });
+
+      const step = document.createElement('div');
+      step.className = 'workflow-step';
+      step.id = stepId;
+      step.innerHTML = `
+        <div class="workflow-step-left">
+          <div class="workflow-step-node">${stepNum}</div>
+          <div class="workflow-step-line last"></div>
+        </div>
+        <div class="workflow-step-content">
+          <div class="workflow-step-row">
+            <div class="workflow-step-inputs">
+              <input type="text" class="step-name" placeholder="Step name (e.g. Customer submits request)" />
+              <input type="text" class="step-detail" placeholder="Who / what system handles this? (e.g. Support team via email)" />
+            </div>
+            <button type="button" class="workflow-step-delete" onclick="removeWorkflowStep('${chainId}', '${stepId}')">✕</button>
+          </div>
+        </div>`;
+      chain.appendChild(step);
+      refreshArrows(chainId);
+    }
+
+    function removeWorkflowStep(chainId, stepId) {
+      const chain = document.getElementById(chainId);
+      const steps = chain.querySelectorAll('.workflow-step');
+      if (steps.length <= 1) return; // keep at least 1
+      const el = document.getElementById(stepId);
+      if (el) el.remove();
+      renumberSteps(chainId);
+      refreshArrows(chainId);
+    }
+
+    function renumberSteps(chainId) {
+      const chain = document.getElementById(chainId);
+      chain.querySelectorAll('.workflow-step-node').forEach((node, i) => {
+        node.textContent = i + 1;
+      });
+    }
+
+    function refreshArrows(chainId) {
+      const chain = document.getElementById(chainId);
+      // Remove existing arrow elements
+      chain.querySelectorAll('.workflow-arrow').forEach(a => a.remove());
+      const steps = chain.querySelectorAll('.workflow-step');
+      // Mark last step line
+      steps.forEach((s, i) => {
+        const line = s.querySelector('.workflow-step-line');
+        if (line) {
+          if (i === steps.length - 1) line.classList.add('last');
+          else line.classList.remove('last');
+        }
+      });
+    }
+
+    function getWorkflowData() {
+      const flows = [];
+      document.querySelectorAll('.workflow-flow-card').forEach(card => {
+        const title = card.querySelector('.workflow-flow-title-input').value.trim();
+        const steps = [];
+        card.querySelectorAll('.workflow-step').forEach((step, i) => {
+          const name   = step.querySelector('.step-name').value.trim();
+          const detail = step.querySelector('.step-detail').value.trim();
+          if (name) steps.push({ step: i + 1, name, detail });
+        });
+        if (title || steps.length) flows.push({ title: title || 'Untitled flow', steps });
+      });
+      return flows;
+    }
+
+    function workflowToText(flows) {
+      if (!flows.length) return '—';
+      return flows.map(f => {
+        const chain = f.steps.map((s, i) =>
+          `${i > 0 ? ' → ' : ''}[${s.step}] ${s.name}${s.detail ? ' (' + s.detail + ')' : ''}`
+        ).join('');
+        return `<strong>${f.title}</strong><br>${chain || '(no steps)'}`;
+      }).join('<br><br>');
+    }
+
     function toggleNoneDailyApps(el) {
       if (el.checked) {
         document.querySelectorAll('input[name="daily-apps"]').forEach(cb => {
@@ -1739,24 +2005,6 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
       }
     });
 
-    function toggleNoneInteg(el) {
-      if (el.checked) {
-        document.querySelectorAll('input[name="integration"]').forEach(cb => {
-          if (cb !== el) cb.checked = false;
-        });
-      }
-    }
-    // Uncheck "None" and "Not sure" if another integration is selected
-    document.querySelectorAll('input[name="integration"]').forEach(cb => {
-      if (cb.id !== 'integ-none' && cb.id !== 'integ-notsure') {
-        cb.addEventListener('change', function() {
-          if (this.checked) {
-            document.getElementById('integ-none').checked = false;
-            document.getElementById('integ-notsure').checked = false;
-          }
-        });
-      }
-    });
 
     // ─── Priority Dropdowns (prevent duplicates) ─────────
     function syncPriorities() {
@@ -1796,13 +2044,6 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
         use_cases:          ucChecked,
         coding_tasks:       Array.from(document.querySelectorAll('input[name="coding-task"]:checked')).map(c => c.value),
         coding_languages:   document.getElementById('coding-languages').value.trim(),
-        ai_usage:           (document.querySelector('input[name="ai-usage"]:checked') || {}).value || '',
-        current_tools:      document.getElementById('current-tools').value.trim(),
-        pain_point:         document.getElementById('pain-point').value.trim(),
-        privacy:            (document.querySelector('input[name="privacy"]:checked') || {}).value || '',
-        integrations:       Array.from(document.querySelectorAll('input[name="integration"]:checked')).map(c => c.value),
-        num_users:          parseInt(document.getElementById('user-slider').value),
-        timeline:           (document.querySelector('input[name="timeline"]:checked') || {}).value || '',
         priority_1:         document.getElementById('priority-1').value,
         priority_2:         document.getElementById('priority-2').value,
         priority_3:         document.getElementById('priority-3').value,
@@ -1810,11 +2051,14 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
         contact_method:     (document.querySelector('input[name="contact-method"]:checked') || {}).value || '',
         contact_email:      document.getElementById('contact-email').value.trim(),
         contact_phone:      document.getElementById('contact-phone').value.trim(),
+        ai_context:          (document.querySelector('input[name="ai-context"]:checked') || {}).value || '',
         daily_apps:          Array.from(document.querySelectorAll('input[name="daily-apps"]:checked')).map(c => c.value),
+        software_details:    document.getElementById('software-details').value.trim(),
         integration_actions: Array.from(document.querySelectorAll('input[name="integration-action"]:checked')).map(c => c.value),
+        workflow_flows:      getWorkflowData(),
         scenario_example:    document.getElementById('scenario-example').value.trim(),
         user_type:           (document.querySelector('input[name="user-type"]:checked') || {}).value || '',
-        lang_support:        (document.querySelector('input[name="lang-support"]:checked') || {}).value || '',
+        customer_facing_details: Array.from(document.querySelectorAll('input[name="customer-facing-detail"]:checked')).map(c => c.value),
         daily_users:         (document.querySelector('input[name="daily-users"]:checked') || {}).value || '',
         usage_frequency:     (document.querySelector('input[name="usage-freq"]:checked') || {}).value || '',
         response_speed:      (document.querySelector('input[name="response-speed"]:checked') || {}).value || '',
@@ -1883,26 +2127,8 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
       }
       document.getElementById('sum-section-2').innerHTML = sec2html;
 
-      // Section 3
-      const aiUsage = (document.querySelector('input[name="ai-usage"]:checked') || {}).value || '—';
-      const currentTools = document.getElementById('current-tools').value.trim() || '—';
-      const painPoint = document.getElementById('pain-point').value.trim() || '—';
-      const privacy = (document.querySelector('input[name="privacy"]:checked') || {}).value || '—';
-      const integChecked = Array.from(document.querySelectorAll('input[name="integration"]:checked')).map(c => c.value);
-      const integList = integChecked.length ? integChecked.join(', ') : 'None selected';
-
-      let sec3 = row('Currently using AI?', aiUsage);
-      if (aiUsage === 'Yes' || aiUsage === 'Sometimes') {
-        sec3 += row('Current tools', currentTools);
-      }
-      sec3 += row('Biggest pain point', painPoint.replace(/\n/g, '<br>'));
-      sec3 += row('Data privacy importance', privacy);
-      sec3 += row('Integration needs', integList);
-      document.getElementById('sum-section-3').innerHTML = sec3;
 
       // Section 4
-      const numUsers = document.getElementById('user-slider').value;
-      const timeline = (document.querySelector('input[name="timeline"]:checked') || {}).value || '—';
       const p1 = document.getElementById('priority-1').value;
       const p2 = document.getElementById('priority-2').value;
       const p3 = document.getElementById('priority-3').value;
@@ -1912,35 +2138,40 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
       const contactPhone = document.getElementById('contact-phone').value.trim() || '—';
 
       document.getElementById('sum-section-4').innerHTML =
-        row('Number of users', numUsers) +
-        row('Start timeline', timeline) +
         row('Top priorities', `1st: ${p1}<br>2nd: ${p2}<br>3rd: ${p3}`) +
         row('Other requirements', otherReq.replace(/\n/g, '<br>')) +
         row('Preferred contact', contactMethod) +
         row('Email', contactEmail) +
         row('Phone', contactPhone !== '—' ? contactPhone : '—');
 
-      // Section 5 — Feature Scope
-      const accessChannels = Array.from(document.querySelectorAll('input[name="access-channel"]:checked')).map(c => c.value);
-      const accessList = accessChannels.length
-        ? accessChannels.map(u => `<span style="display:inline-block;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);border-radius:6px;padding:2px 10px;font-size:0.82rem;margin:2px;">${u}</span>`).join(' ')
+      // Section 5 — Integration & Features
+      const aiContext     = (document.querySelector('input[name="ai-context"]:checked') || {}).value || '—';
+      const dailyApps     = Array.from(document.querySelectorAll('input[name="daily-apps"]:checked')).map(c => c.value);
+      const dailyAppsList = dailyApps.length
+        ? dailyApps.map(u => `<span style="display:inline-block;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);border-radius:6px;padding:2px 10px;font-size:0.82rem;margin:2px;">${u}</span>`).join(' ')
         : '—';
-      const knowledgeBase = (document.querySelector('input[name="knowledge-base"]:checked') || {}).value || '—';
-      const docVol        = (document.querySelector('input[name="doc-volume"]:checked') || {}).value || '—';
-      const automation    = (document.querySelector('input[name="automation"]:checked') || {}).value || '—';
-      const persona       = (document.querySelector('input[name="persona"]:checked') || {}).value || '—';
-      const langSupport   = (document.querySelector('input[name="lang-support"]:checked') || {}).value || '—';
-      const scopeNotes    = document.getElementById('scope-notes').value.trim() || '—';
+      const softwareDetails = document.getElementById('software-details').value.trim() || '—';
+      const intActions    = Array.from(document.querySelectorAll('input[name="integration-action"]:checked')).map(c => c.value);
+      const intActionsList = intActions.length
+        ? intActions.map(u => `<span style="display:inline-block;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);border-radius:6px;padding:2px 10px;font-size:0.82rem;margin:2px;">${u}</span>`).join(' ')
+        : '—';
+      const scenarioEx    = document.getElementById('scenario-example').value.trim() || '—';
+      const userType      = (document.querySelector('input[name="user-type"]:checked') || {}).value || '—';
+      const cfDetails     = Array.from(document.querySelectorAll('input[name="customer-facing-detail"]:checked')).map(c => c.value);
+      const cfDetailsList = cfDetails.length
+        ? cfDetails.map(u => `<span style="display:inline-block;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);border-radius:6px;padding:2px 10px;font-size:0.82rem;margin:2px;">${u}</span>`).join(' ')
+        : null;
+      const workflowFlows = getWorkflowData();
+      const workflowSummary = workflowToText(workflowFlows);
 
-      let sec5 = row('Access channels', accessList) +
-        row('Internal knowledge base', knowledgeBase);
-      if (knowledgeBase !== 'No — general AI capability is enough' && knowledgeBase !== '—') {
-        sec5 += row('Content volume', docVol);
-      }
-      sec5 += row('Automation level', automation) +
-        row('Custom persona / branding', persona) +
-        row('Language support', langSupport) +
-        row('Additional scope notes', scopeNotes.replace(/\n/g, '<br>'));
+      let sec5 = row('Deployment context', aiContext) +
+        row('Daily systems used', dailyAppsList) +
+        row('Systems & their purpose', softwareDetails.replace(/\n/g, '<br>')) +
+        row('AI actions needed', intActionsList) +
+        row('Example scenario', scenarioEx.replace(/\n/g, '<br>')) +
+        row('AI audience', userType);
+      if (cfDetailsList) sec5 += row('Customer-facing requirements', cfDetailsList);
+      sec5 += row('Business workflows', workflowSummary);
       document.getElementById('sum-section-5').innerHTML = sec5;
 
       // Section 6 — Scale & Budget
@@ -1948,25 +2179,16 @@ Or: "Our HR team gets the same policy questions 50 times a week. I&apos;d want s
       const usageFreq   = (document.querySelector('input[name="usage-freq"]:checked') || {}).value || '—';
       const respSpeed   = (document.querySelector('input[name="response-speed"]:checked') || {}).value || '—';
       const futureScale = (document.querySelector('input[name="future-scale"]:checked') || {}).value || '—';
-      const budgetRange = (document.querySelector('input[name="budget"]:checked') || {}).value || '—';
 
       document.getElementById('sum-section-6').innerHTML =
         row('Daily active users', dailyUsers) +
         row('Usage intensity', usageFreq) +
         row('Response speed needed', respSpeed) +
-        row('Expected growth', futureScale) +
-        row('Budget range', budgetRange);
+        row('Expected growth', futureScale);
     }
 
-    // ─── Update slider track fill ─────────────────────────
-    const slider = document.getElementById('user-slider');
-    function updateSliderFill() {
-      const min = +slider.min, max = +slider.max, val = +slider.value;
-      const pct = ((val - min) / (max - min)) * 100;
-      slider.style.background = `linear-gradient(to right, var(--purple) ${pct}%, rgba(255,255,255,0.1) ${pct}%)`;
-    }
-    slider.addEventListener('input', updateSliderFill);
-    updateSliderFill();
+    // Seed one default workflow flow on load
+    addWorkflowFlow();
   </script>
 </body>
 </html>
